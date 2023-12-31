@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:tutoree_app/models/login_model.dart';
+import 'package:tutoree_app/pages/register.dart';
+import 'package:tutoree_app/pages/tutor_list.dart';
+import 'package:tutoree_app/services/login_api_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -8,11 +13,36 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
   bool _showPassword = false;
-  void _togglevisibility() {
+
+  /// Method to show/hide password (default:hide)
+  void _togglePasswordVisibility() {
     setState(() {
       _showPassword = !_showPassword;
     });
+  }
+
+  LoginApi loginService = LoginApi();
+  Login? loginRequest;
+  LoginResponse? loginRes;
+
+  Future<void> loginDo(String email, String password) async {
+    loginRes = await loginService.login({
+      "email": email,
+      "password": password,
+    });
+    if (loginRes?.statusCode == 200) {
+      Get.to(() => const TutorList());
+    } else if (loginRes?.statusCode == 401) {
+      alterDialog('Please enter the correct password');
+      throw Exception(loginRes?.message);
+    } else if (loginRes?.statusCode == 404) {
+      alterDialog('User not registered or OTP not verified');
+      throw Exception(loginRes?.message);
+    }
   }
 
   @override
@@ -52,7 +82,8 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               width: 350.0,
               // height: 100.0,
-              child: TextField(
+              child: TextFormField(
+                controller: emailController,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 22.0,
@@ -87,7 +118,8 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               width: 350.0,
               // height: 100.0,
-              child: TextField(
+              child: TextFormField(
+                controller: passwordController,
                 textAlign: TextAlign.center,
                 obscureText: !_showPassword,
                 obscuringCharacter: '*',
@@ -119,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   suffixIcon: GestureDetector(
                     onTap: () {
-                      _togglevisibility();
+                      _togglePasswordVisibility();
                     },
                     child: Icon(
                       _showPassword
@@ -129,6 +161,12 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
+                validator: (value) {
+                  if (value!.length < 6) {
+                    return 'Password must be atleast 6 characters';
+                  }
+                  return null;
+                },
               ),
             ),
             const SizedBox(
@@ -148,7 +186,13 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                setState(() {
+                  loginRequest?.email = emailController.text;
+                  loginRequest?.password = passwordController.text;
+                  loginDo(emailController.text, passwordController.text);
+                });
+              },
               child: const Text(
                 'login',
                 style: TextStyle(
@@ -163,20 +207,41 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(
               height: 20.0,
             ),
-            const Text(
-              'register >',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color(0xFF2756FD),
-                fontSize: 20,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.w400,
-                height: 0,
+            GestureDetector(
+              onTap: () {
+                Get.to(() => const Register());
+              },
+              child: const Text(
+                'register >',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color(0xFF2756FD),
+                  fontSize: 20,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w400,
+                  height: 0,
+                ),
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  void gotoUserScreen() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const TutorList()));
+  }
+
+  alterDialog(String message) {
+    Get.defaultDialog(
+      title: 'login error',
+      middleText: message,
+      textCancel: 'ok',
+      radius: 4.0,
+      barrierDismissible: false,
+      buttonColor: Colors.white,
     );
   }
 }
