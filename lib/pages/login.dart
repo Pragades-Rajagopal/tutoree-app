@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tutoree_app/config/constants.dart';
 import 'package:tutoree_app/models/login_model.dart';
 import 'package:tutoree_app/pages/register.dart';
 import 'package:tutoree_app/pages/tutor_list.dart';
 import 'package:tutoree_app/services/login_api_service.dart';
+import 'package:tutoree_app/utils/common_utils.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -37,10 +39,16 @@ class _LoginPageState extends State<LoginPage> {
     if (loginRes?.statusCode == 200) {
       Get.to(() => const TutorList());
     } else if (loginRes?.statusCode == 401) {
-      alterDialog('Please enter the correct password');
+      alterDialog(
+        alertDialog['loginErrorTitle']!,
+        alertDialog['IncorrectPassword']!,
+      );
       throw Exception(loginRes?.message);
     } else if (loginRes?.statusCode == 404) {
-      alterDialog('User not registered or OTP not verified');
+      alterDialog(
+        alertDialog['loginErrorTitle']!,
+        alertDialog['userNotRegistered']!,
+      );
       throw Exception(loginRes?.message);
     }
   }
@@ -163,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 validator: (value) {
                   if (value!.length < 6) {
-                    return 'Password must be atleast 6 characters';
+                    return alertDialog['passwordCharacter']!;
                   }
                   return null;
                 },
@@ -226,22 +234,6 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
       ),
-    );
-  }
-
-  void gotoUserScreen() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const TutorList()));
-  }
-
-  alterDialog(String message) {
-    Get.defaultDialog(
-      title: 'login error',
-      middleText: message,
-      textCancel: 'ok',
-      radius: 4.0,
-      barrierDismissible: false,
-      buttonColor: Colors.white,
     );
   }
 }
