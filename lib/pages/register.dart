@@ -59,18 +59,18 @@ class _RegisterState extends State<Register> {
     });
     if (registerRes?.statusCode == 500) {
       if (registerRes?.message == responseErrors['UNIQUE_mobile_no']) {
-        alterDialog(
+        alterDialogFunc(
           alertDialog['registerErrorTitle']!,
           alertDialog['mobileNoExists']!,
         );
       } else if (registerRes?.message == responseErrors['UNIQUE_email']) {
-        alterDialog(
+        alterDialogFunc(
           alertDialog['registerErrorTitle']!,
           alertDialog['emailExists']!,
         );
       }
     } else {
-      Get.to(() => const OtpPage());
+      Get.to(() => OtpPage(email: email));
     }
   }
 

@@ -38,3 +38,28 @@ class RegistrationResponse {
     message = json["message"];
   }
 }
+
+class OTP {
+  String? email;
+  String? pin;
+
+  OTP({
+    this.email,
+    this.pin,
+  });
+}
+
+class OTPresponse {
+  int? statusCode;
+  String? message;
+
+  OTPresponse({
+    this.statusCode,
+    this.message,
+  });
+
+  OTPresponse.fromJson(Map<String, dynamic> json) {
+    statusCode = json["statusCode"];
+    message = json["message"];
+  }
+}

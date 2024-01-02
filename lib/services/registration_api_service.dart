@@ -16,3 +16,16 @@ class RegistrationApi {
     return result;
   }
 }
+
+class ValidationOtpApi {
+  Future<OTPresponse> register(Map<String, String> data) async {
+    final env = await accessENV(assetsFileName: '.env');
+    var response = await http.post(
+        Uri.parse('${env["URL"]}${endpoints["otp"]}'),
+        body: json.encode(data),
+        headers: apiHeader);
+    var body = jsonDecode(response.body);
+    OTPresponse result = OTPresponse.fromJson(body);
+    return result;
+  }
+}

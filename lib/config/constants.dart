@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 Map<String, String> endpoints = {
   "login": "/api/login",
   "user": "/api/users",
+  "otp": "/api/validate-otp",
 };
 
 Map<String, String> apiHeader = {
@@ -17,7 +18,9 @@ Map<String, String> alertDialog = {
   'userNotRegistered': 'user not registered or OTP not verified',
   'registerErrorTitle': 'registration error',
   'mobileNoExists': 'mobile number already exists',
+  'emailNotExists': 'email does not exists',
   'emailExists': 'email already exists',
+  'otpNotValidated': 'OTP not validated',
 };
 
 Map<String, String> responseErrors = {
@@ -30,6 +33,7 @@ Map<String, String> textFieldErrors = {
   'mobile': 'mobile number is mandatory with 10 digits',
   'password': 'password is mandatory with greater than 6 characters',
   'mandatory': 'this field is mandatory',
+  'otp_mandatory': 'enter 4 digit otp',
 };
 
 var enabledBorder_ = OutlineInputBorder(

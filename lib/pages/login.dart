@@ -40,13 +40,13 @@ class _LoginPageState extends State<LoginPage> {
     if (loginRes?.statusCode == 200) {
       Get.to(() => const TutorList());
     } else if (loginRes?.statusCode == 401) {
-      alterDialog(
+      alterDialogFunc(
         alertDialog['loginErrorTitle']!,
         alertDialog['IncorrectPassword']!,
       );
       throw Exception(loginRes?.message);
     } else if (loginRes?.statusCode == 404) {
-      alterDialog(
+      alterDialogFunc(
         alertDialog['loginErrorTitle']!,
         alertDialog['userNotRegistered']!,
       );
