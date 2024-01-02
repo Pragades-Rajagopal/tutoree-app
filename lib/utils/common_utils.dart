@@ -6,7 +6,7 @@ alterDialog(String title, String message) {
     title: title,
     middleText: message,
     textCancel: 'ok',
-    radius: 4.0,
+    radius: 12.0,
     barrierDismissible: false,
     buttonColor: Colors.white,
   );

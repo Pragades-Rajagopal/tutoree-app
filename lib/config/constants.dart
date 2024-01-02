@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 Map<String, String> endpoints = {
   "login": "/api/login",
   "user": "/api/users",
@@ -22,3 +24,33 @@ Map<String, String> responseErrors = {
   'UNIQUE_mobile_no': 'UNIQUE constraint failed: users.mobile_no',
   'UNIQUE_email': 'UNIQUE constraint failed: users.email',
 };
+
+Map<String, String> textFieldErrors = {
+  'email': 'email is mandatory',
+  'mobile': 'mobile number is mandatory with 10 digits',
+  'password': 'password is mandatory with greater than 6 characters',
+  'mandatory': 'this field is mandatory',
+};
+
+var enabledBorder_ = OutlineInputBorder(
+  borderRadius: BorderRadius.circular(30.0),
+  borderSide: const BorderSide(
+    color: Colors.black,
+    width: 2.0,
+  ),
+);
+var focusedBorder_ = OutlineInputBorder(
+  borderRadius: BorderRadius.circular(30.0),
+  borderSide: const BorderSide(
+    color: Colors.black,
+    width: 2.0,
+  ),
+);
+
+var errorBorder_ = OutlineInputBorder(
+  borderRadius: BorderRadius.circular(30.0),
+  borderSide: const BorderSide(
+    color: Color(0xFFFF0000),
+    width: 2.0,
+  ),
+);

@@ -15,6 +15,7 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String selectedType = '';
   final fisrtnameController = TextEditingController();
   final lastnameController = TextEditingController();
@@ -80,336 +81,315 @@ class _RegisterState extends State<Register> {
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(0, 140, 0, 0),
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                'let\'s get started \nwith registration...',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  height: 0,
-                ),
-              ),
-              const SizedBox(
-                height: 40.0,
-              ),
-              SizedBox(
-                width: 350.0,
-                // height: 100.0,
-                child: TextFormField(
-                  controller: fisrtnameController,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'let\'s get started \nwith registration...',
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 22.0,
-                  ),
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.all(10.0),
-                    hintText: 'firstname',
-                    hintStyle: const TextStyle(
-                      color: Color(0xFF939393),
-                      fontSize: 22.0,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(
-                        color: Colors.black,
-                        width: 2.0,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(
-                        color: Colors.black,
-                        width: 2.0,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              SizedBox(
-                width: 350.0,
-                // height: 100.0,
-                child: TextFormField(
-                  controller: lastnameController,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 22.0,
-                  ),
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.all(10.0),
-                    hintText: 'lastname',
-                    hintStyle: const TextStyle(
-                      color: Color(0xFF939393),
-                      fontSize: 22.0,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(
-                        color: Colors.black,
-                        width: 2.0,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(
-                        color: Colors.black,
-                        width: 2.0,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              SizedBox(
-                width: 350.0,
-                // height: 100.0,
-                child: TextFormField(
-                  controller: emailController,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 22.0,
-                  ),
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.all(10.0),
-                    hintText: 'email',
-                    hintStyle: const TextStyle(
-                      color: Color(0xFF939393),
-                      fontSize: 22.0,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(
-                        color: Colors.black,
-                        width: 2.0,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(
-                        color: Colors.black,
-                        width: 2.0,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              SizedBox(
-                width: 350.0,
-                // height: 100.0,
-                child: TextFormField(
-                  controller: passwordController,
-                  textAlign: TextAlign.center,
-                  obscureText: !_showPassword,
-                  obscuringCharacter: '*',
-                  enableSuggestions: false,
-                  autocorrect: false,
-                  style: const TextStyle(
-                    fontSize: 22.0,
-                  ),
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.all(10.0),
-                    hintText: '       password',
-                    hintStyle: const TextStyle(
-                      color: Color(0xFF939393),
-                      fontSize: 22.0,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(
-                        color: Colors.black,
-                        width: 2.0,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(
-                        color: Colors.black,
-                        width: 2.0,
-                      ),
-                    ),
-                    suffixIcon: GestureDetector(
-                      onTap: () {
-                        _togglePasswordVisibility();
-                      },
-                      child: Icon(
-                        _showPassword
-                            ? Icons.visibility_outlined
-                            : Icons.visibility_off_sharp,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  validator: (value) {
-                    if (value!.length < 6) {
-                      return 'Password must be atleast 6 characters';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              SizedBox(
-                width: 350.0,
-                // height: 100.0,
-                child: TextFormField(
-                  controller: mobileNoController,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 22.0,
-                  ),
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.all(10.0),
-                    hintText: 'mobile number',
-                    hintStyle: const TextStyle(
-                      color: Color(0xFF939393),
-                      fontSize: 22.0,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(
-                        color: Colors.black,
-                        width: 2.0,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(
-                        color: Colors.black,
-                        width: 2.0,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              Container(
-                alignment: Alignment.center,
-                width: 350.0,
-                decoration: ShapeDecoration(
-                    shape: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
-                  borderSide: const BorderSide(
+                  style: TextStyle(
                     color: Colors.black,
-                    width: 2.0,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    height: 0,
                   ),
-                )),
-                child: DropdownButton<String>(
-                  iconSize: 36.0,
-                  items: <String>[
-                    'tutor',
-                    'student',
-                  ].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(
-                        value,
-                        style: const TextStyle(
-                          fontSize: 22.0,
-                          color: Colors.black,
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                  hint: Container(
-                    alignment: Alignment.center,
-                    child: Text(
-                      selectedType.isEmpty ? 'type' : selectedType,
-                      style: const TextStyle(
+                ),
+                const SizedBox(
+                  height: 40.0,
+                ),
+                SizedBox(
+                  width: 350.0,
+                  // height: 100.0,
+                  child: TextFormField(
+                    controller: fisrtnameController,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 22.0,
+                    ),
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.all(10.0),
+                      hintText: 'firstname',
+                      hintStyle: const TextStyle(
                         color: Color(0xFF939393),
                         fontSize: 22.0,
                       ),
+                      enabledBorder: enabledBorder_,
+                      focusedBorder: focusedBorder_,
+                      errorBorder: errorBorder_,
+                      focusedErrorBorder: focusedBorder_,
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return textFieldErrors["mandatory"];
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                SizedBox(
+                  width: 350.0,
+                  // height: 100.0,
+                  child: TextFormField(
+                    controller: lastnameController,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 22.0,
+                    ),
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.all(10.0),
+                      hintText: 'lastname',
+                      hintStyle: const TextStyle(
+                        color: Color(0xFF939393),
+                        fontSize: 22.0,
+                      ),
+                      enabledBorder: enabledBorder_,
+                      focusedBorder: focusedBorder_,
+                      errorBorder: errorBorder_,
+                      focusedErrorBorder: focusedBorder_,
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return textFieldErrors["mandatory"];
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                SizedBox(
+                  width: 350.0,
+                  // height: 100.0,
+                  child: TextFormField(
+                    controller: emailController,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 22.0,
+                    ),
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.all(10.0),
+                      hintText: 'email',
+                      hintStyle: const TextStyle(
+                        color: Color(0xFF939393),
+                        fontSize: 22.0,
+                      ),
+                      enabledBorder: enabledBorder_,
+                      focusedBorder: focusedBorder_,
+                      errorBorder: errorBorder_,
+                      focusedErrorBorder: focusedBorder_,
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty || !value.isEmail) {
+                        return textFieldErrors["email"];
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                SizedBox(
+                  width: 350.0,
+                  // height: 100.0,
+                  child: TextFormField(
+                    controller: passwordController,
+                    textAlign: TextAlign.center,
+                    obscureText: !_showPassword,
+                    obscuringCharacter: '*',
+                    enableSuggestions: false,
+                    autocorrect: false,
+                    style: const TextStyle(
+                      fontSize: 22.0,
+                    ),
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.all(10.0),
+                      hintText: '       password',
+                      hintStyle: const TextStyle(
+                        color: Color(0xFF939393),
+                        fontSize: 22.0,
+                      ),
+                      enabledBorder: enabledBorder_,
+                      focusedBorder: focusedBorder_,
+                      errorBorder: errorBorder_,
+                      focusedErrorBorder: focusedBorder_,
+                      suffixIcon: GestureDetector(
+                        onTap: () {
+                          _togglePasswordVisibility();
+                        },
+                        child: Icon(
+                          _showPassword
+                              ? Icons.visibility_outlined
+                              : Icons.visibility_off_sharp,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value!.length < 6) {
+                        return 'Password must be atleast 6 characters';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                SizedBox(
+                  width: 350.0,
+                  // height: 100.0,
+                  child: TextFormField(
+                    controller: mobileNoController,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 22.0,
+                    ),
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.all(10.0),
+                      hintText: 'mobile number',
+                      hintStyle: const TextStyle(
+                        color: Color(0xFF939393),
+                        fontSize: 22.0,
+                      ),
+                      enabledBorder: enabledBorder_,
+                      focusedBorder: focusedBorder_,
+                      errorBorder: errorBorder_,
+                      focusedErrorBorder: focusedBorder_,
+                    ),
+                    validator: (value) {
+                      if (value!.length != 10 || !value.isNumericOnly) {
+                        return textFieldErrors["mobile"];
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  width: 350.0,
+                  decoration: ShapeDecoration(
+                      shape: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                    borderSide: const BorderSide(
+                      color: Colors.black,
+                      width: 2.0,
+                    ),
+                  )),
+                  child: DropdownButton<String>(
+                    iconSize: 36.0,
+                    items: <String>[
+                      'tutor',
+                      'student',
+                    ].map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(
+                          value,
+                          style: const TextStyle(
+                            fontSize: 22.0,
+                            color: Colors.black,
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                    hint: Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        selectedType.isEmpty ? 'type' : selectedType,
+                        style: const TextStyle(
+                          color: Color(0xFF939393),
+                          fontSize: 22.0,
+                        ),
+                      ),
+                    ),
+                    borderRadius: BorderRadius.circular(30),
+                    underline: const SizedBox(),
+                    isExpanded: true,
+                    onChanged: (value) {
+                      if (value != null) {
+                        setState(() {
+                          selectedType = value;
+                        });
+                      }
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.black87,
+                    backgroundColor: const Color(0xFFFFC8AC),
+                    minimumSize: const Size(130, 50),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                    ),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(30.0),
+                      ),
                     ),
                   ),
-                  borderRadius: BorderRadius.circular(30),
-                  underline: const SizedBox(),
-                  isExpanded: true,
-                  onChanged: (value) {
-                    if (value != null) {
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
                       setState(() {
-                        selectedType = value;
+                        registrationDo(
+                          fisrtnameController.text,
+                          lastnameController.text,
+                          emailController.text,
+                          passwordController.text,
+                          num.parse(mobileNoController.text),
+                          selectedType,
+                        );
                       });
                     }
                   },
-                ),
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.black87,
-                  backgroundColor: const Color(0xFFFFC8AC),
-                  minimumSize: const Size(100, 50),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                  ),
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(30.0),
+                  child: const Text(
+                    'register',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 24,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w400,
+                      height: 0,
                     ),
                   ),
                 ),
-                onPressed: () {
-                  setState(() {
-                    registrationDo(
-                      fisrtnameController.text,
-                      lastnameController.text,
-                      emailController.text,
-                      passwordController.text,
-                      num.parse(mobileNoController.text),
-                      selectedType,
-                    );
-                  });
-                },
-                child: const Text(
-                  'register',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 24,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w400,
-                    height: 0,
+                const SizedBox(
+                  height: 20.0,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Get.to(() => const LoginPage());
+                  },
+                  child: const Text(
+                    '< back to login',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Color(0xFF2756FD),
+                      fontSize: 20,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w400,
+                      height: 0,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Get.to(() => const LoginPage());
-                },
-                child: const Text(
-                  '< back to login',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Color(0xFF2756FD),
-                    fontSize: 20,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w400,
-                    height: 0,
-                  ),
+                const SizedBox(
+                  height: 50.0,
                 ),
-              ),
-              const SizedBox(
-                height: 50.0,
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
