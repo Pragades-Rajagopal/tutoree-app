@@ -29,3 +29,16 @@ class ValidationOtpApi {
     return result;
   }
 }
+
+class ResendOtpApi {
+  Future<ResendOTPResponse> sendOtp(Map<String, String> data) async {
+    final env = await accessENV(assetsFileName: '.env');
+    var response = await http.post(
+        Uri.parse('${env["URL"]}${endpoints["resendOtp"]}'),
+        body: json.encode(data),
+        headers: apiHeader);
+    var body = jsonDecode(response.body);
+    ResendOTPResponse result = ResendOTPResponse.fromJson(body);
+    return result;
+  }
+}

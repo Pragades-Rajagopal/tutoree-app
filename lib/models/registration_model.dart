@@ -63,3 +63,21 @@ class OTPresponse {
     message = json["message"];
   }
 }
+
+class ResendOTPResponse {
+  int? statusCode;
+  String? message;
+  String? error;
+
+  ResendOTPResponse({
+    this.statusCode,
+    this.message,
+    this.error,
+  });
+
+  ResendOTPResponse.fromJson(Map<String, dynamic> json) {
+    statusCode = json["statusCode"];
+    message = json["message"];
+    error = json["error"];
+  }
+}

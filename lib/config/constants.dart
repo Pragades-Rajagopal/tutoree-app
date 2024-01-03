@@ -4,6 +4,7 @@ Map<String, String> endpoints = {
   "login": "/api/login",
   "user": "/api/users",
   "otp": "/api/validate-otp",
+  "resendOtp": "/api/resend-otp",
 };
 
 Map<String, String> apiHeader = {
@@ -21,6 +22,8 @@ Map<String, String> alertDialog = {
   'emailNotExists': 'email does not exists',
   'emailExists': 'email already exists',
   'otpNotValidated': 'OTP not validated',
+  'otpValidated': 'OTP validated',
+  'rerouteLoginPage': 'redirecting to login page',
 };
 
 Map<String, String> responseErrors = {
