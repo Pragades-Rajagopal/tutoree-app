@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutoree_app/config/constants.dart';
 import 'package:tutoree_app/models/login_model.dart';
 import 'package:tutoree_app/pages/register.dart';
-import 'package:tutoree_app/pages/tutor_list.dart';
+import 'package:tutoree_app/pages/student.dart';
+import 'package:tutoree_app/pages/tutor.dart';
 import 'package:tutoree_app/services/login_api_service.dart';
 import 'package:tutoree_app/utils/common_utils.dart';
+import 'package:tutoree_app/utils/token_validator.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -18,6 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  String? userType;
 
   bool _showPassword = false;
 
@@ -26,6 +30,11 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       _showPassword = !_showPassword;
     });
+  }
+
+  void parseToken(String? token) {
+    final payloadData = parseJwtPayLoad(token!);
+    userType = payloadData["_type"];
   }
 
   LoginApi loginService = LoginApi();
@@ -38,7 +47,17 @@ class _LoginPageState extends State<LoginPage> {
       "password": password,
     });
     if (loginRes?.statusCode == 200) {
-      Get.to(() => const TutorList());
+      // Setting token
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String? token = loginRes?.token;
+      await pref.setString('token', token!);
+      // Setting user type
+      parseToken(loginRes!.token);
+      await pref.setString('user_type', userType!);
+      // Redirect based on user type
+      userType == 'tutor'
+          ? Get.offAll(() => const TutorPage())
+          : Get.offAll(() => const StudentPage());
     } else if (loginRes?.statusCode == 401) {
       errorSnackBar(
         alertDialog['loginErrorTitle']!,
@@ -56,6 +75,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Get.offAll(() => const TutorPage());
+    // Get.offAll(() => const StudentPage());
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(

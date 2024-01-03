@@ -22,6 +22,6 @@ class LoginResponse {
   LoginResponse.fromJson(Map<String, dynamic> response) {
     statusCode = response["statusCode"];
     message = response["message"];
-    token = response["message"];
+    token = response["token"];
   }
 }
