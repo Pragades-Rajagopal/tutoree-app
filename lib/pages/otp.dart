@@ -30,20 +30,24 @@ class _OtpPageState extends State<OtpPage> {
       "email": email,
       "pin": otp,
     });
-    // print(otpRes?.message);
-    // print(otpRes?.statusCode);
     if (otpRes?.statusCode == 404) {
-      alterDialogFunc(
+      errorSnackBar(
         alertDialog['registerErrorTitle']!,
         alertDialog['emailNotExists']!,
       );
     } else if (otpRes?.statusCode == 400) {
-      alterDialogFunc(
+      errorSnackBar(
         alertDialog['registerErrorTitle']!,
         alertDialog['otpNotValidated']!,
       );
     } else {
-      Get.to(() => const LoginPage());
+      successSnackBar(
+        alertDialog['otpValidated']!,
+        alertDialog['rerouteLoginPage']!,
+      );
+      Future.delayed(const Duration(seconds: 2), () {
+        Get.to(() => const LoginPage());
+      });
     }
   }
 
@@ -68,7 +72,7 @@ class _OtpPageState extends State<OtpPage> {
                 ),
               ),
               const SizedBox(
-                height: 40.0,
+                height: 20.0,
               ),
               SizedBox(
                 width: 140.0,
@@ -81,7 +85,7 @@ class _OtpPageState extends State<OtpPage> {
                   ),
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.all(10.0),
-                    hintText: 'otp',
+                    hintText: '****',
                     hintStyle: const TextStyle(
                       color: Color(0xFF939393),
                       fontSize: 22.0,
@@ -128,6 +132,25 @@ class _OtpPageState extends State<OtpPage> {
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 24,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w400,
+                    height: 0,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20.0,
+              ),
+              GestureDetector(
+                onTap: () {
+                  // create func and trigger otp
+                },
+                child: const Text(
+                  'resend otp',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Color(0xFF2756FD),
+                    fontSize: 20,
                     fontFamily: 'Poppins',
                     fontWeight: FontWeight.w400,
                     height: 0,

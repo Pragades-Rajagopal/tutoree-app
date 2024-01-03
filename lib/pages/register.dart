@@ -59,12 +59,12 @@ class _RegisterState extends State<Register> {
     });
     if (registerRes?.statusCode == 500) {
       if (registerRes?.message == responseErrors['UNIQUE_mobile_no']) {
-        alterDialogFunc(
+        errorSnackBar(
           alertDialog['registerErrorTitle']!,
           alertDialog['mobileNoExists']!,
         );
       } else if (registerRes?.message == responseErrors['UNIQUE_email']) {
-        alterDialogFunc(
+        errorSnackBar(
           alertDialog['registerErrorTitle']!,
           alertDialog['emailExists']!,
         );
@@ -375,6 +375,23 @@ class _RegisterState extends State<Register> {
                   },
                   child: const Text(
                     '< back to login',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Color(0xFF2756FD),
+                      fontSize: 20,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w400,
+                      height: 0,
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Get.to(() =>
+                        const OtpPage(email: 'testf2mailer@mailnesia.com'));
+                  },
+                  child: const Text(
+                    'otp >',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Color(0xFF2756FD),

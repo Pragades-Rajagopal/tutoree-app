@@ -11,3 +11,31 @@ alterDialogFunc(String title, String message) {
     buttonColor: Colors.white,
   );
 }
+
+successSnackBar(String title, String message) {
+  Get.snackbar(
+    title,
+    message,
+    icon: const Icon(
+      Icons.check_circle_outlined,
+      color: Colors.green,
+    ),
+    snackPosition: SnackPosition.BOTTOM,
+    margin: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+    backgroundColor: const Color(0xFFEEFFEE),
+  );
+}
+
+errorSnackBar(String title, String message) {
+  Get.snackbar(
+    title,
+    message,
+    icon: const Icon(
+      Icons.cancel_outlined,
+      color: Colors.red,
+    ),
+    snackPosition: SnackPosition.BOTTOM,
+    margin: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+    backgroundColor: const Color(0xFFFFDAD7),
+  );
+}
