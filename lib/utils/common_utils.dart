@@ -23,6 +23,7 @@ successSnackBar(String title, String message) {
     snackPosition: SnackPosition.BOTTOM,
     margin: const EdgeInsets.fromLTRB(20, 0, 20, 10),
     backgroundColor: const Color(0xFFEEFFEE),
+    maxWidth: 350.0,
   );
 }
 
@@ -37,5 +38,6 @@ errorSnackBar(String title, String message) {
     snackPosition: SnackPosition.BOTTOM,
     margin: const EdgeInsets.fromLTRB(20, 0, 20, 10),
     backgroundColor: const Color(0xFFFFDAD7),
+    maxWidth: 350.0,
   );
 }

@@ -5,6 +5,7 @@ Map<String, String> endpoints = {
   "user": "/api/users",
   "otp": "/api/validate-otp",
   "resendOtp": "/api/resend-otp",
+  "resetPassword": "/api/reset-password",
 };
 
 Map<String, String> apiHeader = {
@@ -24,6 +25,12 @@ Map<String, String> alertDialog = {
   'otpNotValidated': 'OTP not validated',
   'otpValidated': 'OTP validated',
   'rerouteLoginPage': 'redirecting to login page',
+  'oops': 'oops',
+  'commonError': 'something went wrong',
+  'commonSuccess': 'success',
+  'emailSent': 'OTP sent to your registered email address',
+  'passResetSuccess': 'password reset successful',
+  'emailNotExistsOrUnregistered': 'email does not exists or not active',
 };
 
 Map<String, String> responseErrors = {

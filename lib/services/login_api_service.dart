@@ -15,4 +15,16 @@ class LoginApi {
     LoginResponse result = LoginResponse.fromJson(body);
     return result;
   }
+
+  Future<ResetPasswordResponse> resetPasswordFunc(
+      Map<String, dynamic> data) async {
+    final env = await accessENV(assetsFileName: '.env');
+    var response = await http.post(
+        Uri.parse('${env["URL"]}${endpoints["resetPassword"]}'),
+        body: json.encode(data),
+        headers: apiHeader);
+    var body = jsonDecode(response.body);
+    ResetPasswordResponse result = ResetPasswordResponse.fromJson(body);
+    return result;
+  }
 }
