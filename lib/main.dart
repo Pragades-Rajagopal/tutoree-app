@@ -32,7 +32,6 @@ class MyApp extends StatelessWidget {
             bodySmall: GoogleFonts.poppins(),
           ),
         ),
-        // home: const LoginPage(),
         initialRoute: token == null ? "/" : "user",
         routes: {
           "user": (context) =>

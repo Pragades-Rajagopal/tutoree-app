@@ -25,3 +25,30 @@ class LoginResponse {
     token = response["token"];
   }
 }
+
+class ResetPassword {
+  String? email;
+  String? otp;
+  String? password;
+
+  ResetPassword({
+    this.email,
+    this.otp,
+    this.password,
+  });
+}
+
+class ResetPasswordResponse {
+  int? statusCode;
+  String? message;
+
+  ResetPasswordResponse({
+    this.statusCode,
+    this.message,
+  });
+
+  ResetPasswordResponse.fromJson(Map<String, dynamic> json) {
+    statusCode = json["statusCode"];
+    message = json["message"];
+  }
+}
