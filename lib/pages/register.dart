@@ -385,23 +385,6 @@ class _RegisterState extends State<Register> {
                     ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Get.to(() =>
-                        const OtpPage(email: 'testf2mailer@mailnesia.com'));
-                  },
-                  child: const Text(
-                    'otp >',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color(0xFF2756FD),
-                      fontSize: 20,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w400,
-                      height: 0,
-                    ),
-                  ),
-                ),
                 const SizedBox(
                   height: 50.0,
                 ),

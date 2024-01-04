@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutoree_app/config/constants.dart';
 import 'package:tutoree_app/models/login_model.dart';
 import 'package:tutoree_app/pages/register.dart';
+import 'package:tutoree_app/pages/reset_password.dart';
 import 'package:tutoree_app/pages/student.dart';
 import 'package:tutoree_app/pages/tutor.dart';
 import 'package:tutoree_app/services/login_api_service.dart';
@@ -127,34 +128,10 @@ class _LoginPageState extends State<LoginPage> {
                       color: Color(0xFF939393),
                       fontSize: 22.0,
                     ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(
-                        color: Colors.black,
-                        width: 2.0,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(
-                        color: Colors.black,
-                        width: 2.0,
-                      ),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(
-                        color: Color(0xFFFF0000),
-                        width: 2.0,
-                      ),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(
-                        color: Colors.black,
-                        width: 2.0,
-                      ),
-                    ),
+                    enabledBorder: enabledBorder_,
+                    focusedBorder: focusedBorder_,
+                    errorBorder: errorBorder_,
+                    focusedErrorBorder: focusedBorder_,
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty || !value.isEmail) {
@@ -187,34 +164,10 @@ class _LoginPageState extends State<LoginPage> {
                       color: Color(0xFF939393),
                       fontSize: 22.0,
                     ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(
-                        color: Colors.black,
-                        width: 2.0,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(
-                        color: Colors.black,
-                        width: 2.0,
-                      ),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(
-                        color: Color(0xFFFF0000),
-                        width: 2.0,
-                      ),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(
-                        color: Colors.black,
-                        width: 2.0,
-                      ),
-                    ),
+                    enabledBorder: enabledBorder_,
+                    focusedBorder: focusedBorder_,
+                    errorBorder: errorBorder_,
+                    focusedErrorBorder: focusedBorder_,
                     suffixIcon: GestureDetector(
                       onTap: () {
                         _togglePasswordVisibility();
@@ -273,23 +226,55 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               const SizedBox(
-                height: 20.0,
+                height: 14.0,
               ),
-              GestureDetector(
-                onTap: () {
-                  Get.to(() => const Register());
-                },
-                child: const Text(
-                  'register >',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Color(0xFF2756FD),
-                    fontSize: 20,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w400,
-                    height: 0,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(() => const Register());
+                    },
+                    child: const Text(
+                      'register',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Color(0xFF2756FD),
+                        fontSize: 21,
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w400,
+                        height: 0,
+                      ),
+                    ),
                   ),
-                ),
+                  const SizedBox(
+                    width: 10.0,
+                  ),
+                  Container(
+                    color: Colors.black45,
+                    height: 21,
+                    width: 2,
+                  ),
+                  const SizedBox(
+                    width: 10.0,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(() => const ResetPasswordPage());
+                    },
+                    child: const Text(
+                      'forgot password',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Color(0xFF2756FD),
+                        fontSize: 21,
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w400,
+                        height: 0,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

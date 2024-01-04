@@ -21,7 +21,7 @@ class _OtpPageState extends State<OtpPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final otpController = TextEditingController();
 
-  ValidationOtpApi otpApiService = ValidationOtpApi();
+  OtpApi otpApiService = OtpApi();
   OTP? otpReq;
   OTPresponse? otpRes;
 
@@ -96,7 +96,7 @@ class _OtpPageState extends State<OtpPage> {
                     focusedErrorBorder: focusedBorder_,
                   ),
                   validator: (value) {
-                    if (value!.length != 4) {
+                    if (value!.length != 4 || !value.isNumericOnly) {
                       return textFieldErrors["otp_mandatory"];
                     }
                     return null;
