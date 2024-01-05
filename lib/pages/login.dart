@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutoree_app/config/constants.dart';
 import 'package:tutoree_app/models/login_model.dart';
@@ -25,11 +26,20 @@ class _LoginPageState extends State<LoginPage> {
   String? userType;
 
   bool _showPassword = false;
+  bool _loadingIndicator = false;
+  var buttonColor = const Color(0xFFACBEFF);
 
   /// Method to show/hide password (default:hide)
   void _togglePasswordVisibility() {
     setState(() {
       _showPassword = !_showPassword;
+    });
+  }
+
+  void _stopLoadingIndicator() {
+    setState(() {
+      _loadingIndicator = false;
+      buttonColor = const Color(0xFFACBEFF);
     });
   }
 
@@ -47,6 +57,7 @@ class _LoginPageState extends State<LoginPage> {
       "email": email,
       "password": password,
     });
+    _stopLoadingIndicator();
     if (loginRes?.statusCode == 200) {
       // Setting token
       SharedPreferences pref = await SharedPreferences.getInstance();
@@ -191,10 +202,10 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(
                 height: 20.0,
               ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
+              TextButton(
+                style: TextButton.styleFrom(
                   foregroundColor: Colors.black87,
-                  backgroundColor: const Color(0xFFACBEFF),
+                  backgroundColor: buttonColor,
                   minimumSize: const Size(100, 50),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 16,
@@ -208,22 +219,43 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     setState(() {
+                      _loadingIndicator = true;
+                      buttonColor = Colors.white;
                       loginRequest?.email = emailController.text;
                       loginRequest?.password = passwordController.text;
                       loginDo(emailController.text, passwordController.text);
                     });
                   }
                 },
-                child: const Text(
-                  'login',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 24,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w400,
-                    height: 0,
-                  ),
-                ),
+                child: _loadingIndicator
+                    ? Container(
+                        height: 50,
+                        width: 60,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(30),
+                          ),
+                        ),
+                        child: const LoadingIndicator(
+                          indicatorType: Indicator.ballPulseSync,
+                          colors: [
+                            Colors.black,
+                            Colors.black87,
+                            Colors.black54,
+                          ],
+                        ),
+                      )
+                    : const Text(
+                        'login',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 24,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w400,
+                          height: 0,
+                        ),
+                      ),
               ),
               const SizedBox(
                 height: 14.0,
@@ -239,7 +271,7 @@ class _LoginPageState extends State<LoginPage> {
                       'register',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Color(0xFF2756FD),
+                        color: Colors.black,
                         fontSize: 21,
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w400,
@@ -266,7 +298,7 @@ class _LoginPageState extends State<LoginPage> {
                       'forgot password',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Color(0xFF2756FD),
+                        color: Colors.black,
                         fontSize: 21,
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w400,
