@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:loading_indicator/loading_indicator.dart';
 import 'package:tutoree_app/config/constants.dart';
 import 'package:tutoree_app/models/registration_model.dart';
 import 'package:tutoree_app/pages/login.dart';
@@ -378,14 +377,7 @@ class _RegisterState extends State<Register> {
                               Radius.circular(30),
                             ),
                           ),
-                          child: const LoadingIndicator(
-                            indicatorType: Indicator.ballPulseSync,
-                            colors: [
-                              Colors.black,
-                              Colors.black87,
-                              Colors.black54,
-                            ],
-                          ),
+                          child: loadingIndicator(),
                         )
                       : const Text(
                           'register',
@@ -399,7 +391,7 @@ class _RegisterState extends State<Register> {
                         ),
                 ),
                 const SizedBox(
-                  height: 20.0,
+                  height: 14.0,
                 ),
                 GestureDetector(
                   onTap: () {

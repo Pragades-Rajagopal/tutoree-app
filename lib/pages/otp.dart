@@ -20,16 +20,50 @@ class OtpPage extends StatefulWidget {
 class _OtpPageState extends State<OtpPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final otpController = TextEditingController();
+  var buttonColor = const Color.fromARGB(255, 214, 172, 255);
+  bool _loadingIndicator = false;
+
+  void switchLoadingIndicator() {
+    setState(() {
+      _loadingIndicator = false;
+      buttonColor = const Color.fromARGB(255, 214, 172, 255);
+    });
+  }
 
   OtpApi otpApiService = OtpApi();
   OTP? otpReq;
   OTPresponse? otpRes;
+  OtpApi otpService = OtpApi();
+  ResendOTPResponse? otpResponse;
+
+  Future<void> resendOtpDo(String email) async {
+    otpResponse = await otpService.sendOtp({
+      "email": email,
+    });
+    if (otpResponse!.statusCode == 500) {
+      errorSnackBar(
+        alertDialog['oops']!,
+        alertDialog['commonError']!,
+      );
+    } else if (otpResponse!.statusCode == 404) {
+      errorSnackBar(
+        alertDialog['oops']!,
+        alertDialog['emailNotExistsOrUnregistered']!,
+      );
+    } else if (otpResponse!.statusCode == 200) {
+      successSnackBar(
+        alertDialog['commonSuccess']!,
+        alertDialog['emailSent']!,
+      );
+    }
+  }
 
   Future<void> validateOtpDo(String email, String otp) async {
     otpRes = await otpApiService.register({
       "email": email,
       "pin": otp,
     });
+    switchLoadingIndicator();
     if (otpRes?.statusCode == 404) {
       errorSnackBar(
         alertDialog['registerErrorTitle']!,
@@ -106,10 +140,10 @@ class _OtpPageState extends State<OtpPage> {
               const SizedBox(
                 height: 20.0,
               ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
+              TextButton(
+                style: TextButton.styleFrom(
                   foregroundColor: Colors.black87,
-                  backgroundColor: const Color.fromARGB(255, 214, 172, 255),
+                  backgroundColor: buttonColor,
                   minimumSize: const Size(130, 50),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 16,
@@ -123,27 +157,41 @@ class _OtpPageState extends State<OtpPage> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     setState(() {
+                      _loadingIndicator = true;
+                      buttonColor = Colors.white;
                       validateOtpDo(widget.email, otpController.text);
                     });
                   }
                 },
-                child: const Text(
-                  'submit',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 24,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w400,
-                    height: 0,
-                  ),
-                ),
+                child: _loadingIndicator
+                    ? Container(
+                        height: 50,
+                        width: 90,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(30),
+                          ),
+                        ),
+                        child: loadingIndicator(),
+                      )
+                    : const Text(
+                        'submit',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 24,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w400,
+                          height: 0,
+                        ),
+                      ),
               ),
               const SizedBox(
-                height: 20.0,
+                height: 14.0,
               ),
               GestureDetector(
                 onTap: () {
-                  // create func and trigger otp
+                  resendOtpDo(widget.email);
                 },
                 child: const Text(
                   'resend otp',

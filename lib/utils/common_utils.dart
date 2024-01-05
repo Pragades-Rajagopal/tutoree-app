@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 
 alterDialogFunc(String title, String message) {
   Get.defaultDialog(
@@ -39,5 +40,16 @@ errorSnackBar(String title, String message) {
     margin: const EdgeInsets.fromLTRB(20, 0, 20, 10),
     backgroundColor: const Color(0xFFFFDAD7),
     maxWidth: 350.0,
+  );
+}
+
+loadingIndicator() {
+  return const LoadingIndicator(
+    indicatorType: Indicator.ballPulseSync,
+    colors: [
+      Colors.black,
+      Colors.black87,
+      Colors.black54,
+    ],
   );
 }

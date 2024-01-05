@@ -22,11 +22,20 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
   final passwordController = TextEditingController();
   final otpController = TextEditingController();
   bool _showPassword = false;
+  bool _loadingIndicator = false;
+  var buttonColor = const Color(0xFFACFFBA);
 
   /// Method to show/hide password (default:hide)
   void _togglePasswordVisibility() {
     setState(() {
       _showPassword = !_showPassword;
+    });
+  }
+
+  void _switchLoadingIndicator() {
+    setState(() {
+      _loadingIndicator = false;
+      buttonColor = const Color(0xFFACFFBA);
     });
   }
 
@@ -64,6 +73,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       "password": password,
       "otp": otp,
     });
+    _switchLoadingIndicator();
     if (resetPassRes!.statusCode == 404) {
       errorSnackBar(
         alertDialog['oops']!,
@@ -245,10 +255,10 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
               const SizedBox(
                 height: 20.0,
               ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
+              TextButton(
+                style: TextButton.styleFrom(
                   foregroundColor: Colors.black87,
-                  backgroundColor: const Color.fromARGB(255, 172, 255, 186),
+                  backgroundColor: buttonColor,
                   minimumSize: const Size(130, 50),
                   padding: const EdgeInsets.symmetric(
                     horizontal: 16,
@@ -262,6 +272,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                 onPressed: () {
                   if (key_.currentState!.validate()) {
                     setState(() {
+                      _loadingIndicator = true;
+                      buttonColor = Colors.white;
                       resetPasswordDo(
                         emailController.text,
                         passwordController.text,
@@ -270,16 +282,28 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                     });
                   }
                 },
-                child: const Text(
-                  'submit',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 24,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w400,
-                    height: 0,
-                  ),
-                ),
+                child: _loadingIndicator
+                    ? Container(
+                        height: 50,
+                        width: 90,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(30),
+                          ),
+                        ),
+                        child: loadingIndicator(),
+                      )
+                    : const Text(
+                        'submit',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 24,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w400,
+                          height: 0,
+                        ),
+                      ),
               ),
               const SizedBox(
                 height: 20.0,

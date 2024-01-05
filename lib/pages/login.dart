@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:loading_indicator/loading_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutoree_app/config/constants.dart';
 import 'package:tutoree_app/models/login_model.dart';
@@ -237,14 +236,7 @@ class _LoginPageState extends State<LoginPage> {
                             Radius.circular(30),
                           ),
                         ),
-                        child: const LoadingIndicator(
-                          indicatorType: Indicator.ballPulseSync,
-                          colors: [
-                            Colors.black,
-                            Colors.black87,
-                            Colors.black54,
-                          ],
-                        ),
+                        child: loadingIndicator(),
                       )
                     : const Text(
                         'login',
