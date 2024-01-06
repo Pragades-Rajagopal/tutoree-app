@@ -23,6 +23,9 @@ class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   String? userType;
+  String? userName;
+  String? userEmail;
+  int? userId;
 
   bool _showPassword = false;
   bool _loadingIndicator = false;
@@ -45,6 +48,9 @@ class _LoginPageState extends State<LoginPage> {
   void parseToken(String? token) {
     final payloadData = parseJwtPayLoad(token!);
     userType = payloadData["_type"];
+    userEmail = payloadData["email"];
+    userName = payloadData["username"];
+    userId = payloadData["id"];
   }
 
   LoginApi loginService = LoginApi();
@@ -62,9 +68,12 @@ class _LoginPageState extends State<LoginPage> {
       SharedPreferences pref = await SharedPreferences.getInstance();
       String? token = loginRes?.token;
       await pref.setString('token', token!);
-      // Setting user type
+      // Setting user info
       parseToken(loginRes!.token);
       await pref.setString('user_type', userType!);
+      await pref.setString('user_email', userEmail!);
+      await pref.setString('user_name', userName!);
+      await pref.setString('user_id', userId.toString());
       // Redirect based on user type
       userType == 'tutor'
           ? Get.offAll(() => const TutorPage())
