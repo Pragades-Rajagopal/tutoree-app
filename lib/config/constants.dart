@@ -6,6 +6,7 @@ Map<String, String> endpoints = {
   "otp": "/api/validate-otp",
   "resendOtp": "/api/resend-otp",
   "resetPassword": "/api/reset-password",
+  "studentTutorList": "/api/student/tutor-list",
 };
 
 Map<String, String> apiHeader = {

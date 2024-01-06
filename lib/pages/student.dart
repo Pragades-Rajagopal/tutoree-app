@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tutoree_app/pages/login.dart';
+import 'package:tutoree_app/pages/students/feeds.dart';
+import 'package:tutoree_app/pages/students/home.dart';
+import 'package:tutoree_app/pages/students/profile.dart';
 
 class StudentPage extends StatefulWidget {
   const StudentPage({super.key});
@@ -12,13 +13,11 @@ class StudentPage extends StatefulWidget {
 }
 
 class _StudentPageState extends State<StudentPage> {
+  String? userType;
+  String? userName;
+  String? userEmail;
+  int? userId;
   var _currentIndex = 0;
-  Future<void> logoutDo() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove("token");
-    Get.offAll(() => const LoginPage());
-  }
-
   List<String> headers = [
     'home',
     'feeds',
@@ -26,46 +25,32 @@ class _StudentPageState extends State<StudentPage> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    getTokenData();
+  }
+
+  void getTokenData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userType = prefs.getString("user_type");
+      userEmail = prefs.getString("user_email");
+      userName = prefs.getString("user_name");
+      userId = int.parse(prefs.getString("user_id")!);
+    });
+  }
+
+  static final List<Widget> _widget = [
+    const StudentHomePage(),
+    const StudentFeedsPage(),
+    const StudentProfilePage(),
+  ];
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0.0,
-        foregroundColor: Colors.black,
-        title: Title(
-          color: Colors.black,
-          child: Text(
-            headers[_currentIndex],
-          ),
-        ),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  logoutDo();
-                },
-                child: const Text(
-                  '< logout',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Color(0xFF2756FD),
-                    fontSize: 20,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w400,
-                    height: 0,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      appBar: appBar(),
+      body: _widget[_currentIndex],
       bottomNavigationBar: Container(
         color: Colors.white,
         child: Padding(
@@ -103,6 +88,21 @@ class _StudentPageState extends State<StudentPage> {
           ),
         ),
       ),
+    );
+  }
+
+  AppBar appBar() {
+    return AppBar(
+      backgroundColor: Colors.white,
+      elevation: 0.0,
+      foregroundColor: Colors.black,
+      title: Title(
+        color: Colors.black,
+        child: Text(
+          "Welcome, $userName",
+        ),
+      ),
+      // centerTitle: true,
     );
   }
 }
