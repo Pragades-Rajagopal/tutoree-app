@@ -14,4 +14,17 @@ class StudentApi {
     TutorList result = TutorList.fromJson(data);
     return result;
   }
+
+  Future<TutorRequestResponse> sendTutorRequest(
+      Map<String, dynamic> request) async {
+    final env = await accessENV(assetsFileName: '.env');
+    var response = await http.post(
+      Uri.parse('${env["URL"]}${endpoints["studentTutorList"]}'),
+      body: json.encode(request),
+      headers: apiHeader,
+    );
+    var body = jsonDecode(response.body);
+    TutorRequestResponse result = TutorRequestResponse.fromJson(body);
+    return result;
+  }
 }

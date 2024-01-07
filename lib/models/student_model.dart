@@ -1,12 +1,6 @@
 /// Model to get the list of tutors
 /// based on student's interest
 class TutorList {
-  // int? tutorId;
-  // String? tutorName;
-  // String? bio;
-  // String? websites;
-  // String? courses;
-  // int? studentId;
   List<Map<String, dynamic>> data = [];
 
   TutorList.fromJson(List<dynamic> json) {
@@ -20,5 +14,32 @@ class TutorList {
         "studentId": json[i]["student_id"],
       });
     }
+  }
+}
+
+/// Request model to send request to tutor
+class TutorRequest {
+  int? studentId;
+  int? tutorId;
+
+  TutorRequest({
+    this.studentId,
+    this.tutorId,
+  });
+}
+
+/// Response model to send request to tutor
+class TutorRequestResponse {
+  int? statusCode;
+  String? message;
+
+  TutorRequestResponse({
+    this.statusCode,
+    this.message,
+  });
+
+  TutorRequestResponse.fromJson(Map<String, dynamic> json) {
+    statusCode = json["statusCode"];
+    message = json["message"];
   }
 }

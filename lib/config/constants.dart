@@ -15,6 +15,7 @@ Map<String, String> apiHeader = {
 };
 
 Map<String, String> alertDialog = {
+  'relax': 'relax',
   'IncorrectPassword': 'please enter the correct password',
   'passwordCharacter': 'password must be atleast 6 characters',
   'loginErrorTitle': 'login error',
@@ -32,6 +33,9 @@ Map<String, String> alertDialog = {
   'emailSent': 'OTP sent to your registered email address',
   'passResetSuccess': 'password reset successful',
   'emailNotExistsOrUnregistered': 'email does not exists or not active',
+  'tutorReqExists': 'request has already been sent',
+  'tutorReqError': 'unable to send request at this moment',
+  'tutorReqSuccess': 'request sent successfully',
 };
 
 Map<String, String> responseErrors = {

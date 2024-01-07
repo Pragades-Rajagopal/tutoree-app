@@ -36,7 +36,7 @@ class _StudentPageState extends State<StudentPage> {
       userType = prefs.getString("user_type");
       userEmail = prefs.getString("user_email");
       userName = prefs.getString("user_name");
-      userId = int.parse(prefs.getString("user_id")!);
+      userId = int.parse(prefs.getString("user_id").toString());
     });
   }
 
