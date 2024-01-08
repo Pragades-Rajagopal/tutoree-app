@@ -7,6 +7,8 @@ Map<String, String> endpoints = {
   "resendOtp": "/api/resend-otp",
   "resetPassword": "/api/reset-password",
   "studentTutorList": "/api/student/tutor-list",
+  "sendTutorRequest": "/api/student/request",
+  "feed": "/api/feed",
 };
 
 Map<String, String> apiHeader = {
@@ -36,6 +38,8 @@ Map<String, String> alertDialog = {
   'tutorReqExists': 'request has already been sent',
   'tutorReqError': 'unable to send request at this moment',
   'tutorReqSuccess': 'request sent successfully',
+  'addFeedError': 'unable to add feed at this moment',
+  'addFeedSuccess': 'feed added successfully',
 };
 
 Map<String, String> responseErrors = {
@@ -49,6 +53,7 @@ Map<String, String> textFieldErrors = {
   'password': 'password is mandatory with greater than 6 characters',
   'mandatory': 'this field is mandatory',
   'otp_mandatory': 'enter 4 digit otp',
+  'add_feed_mandatory': 'enter something',
 };
 
 var enabledBorder_ = OutlineInputBorder(

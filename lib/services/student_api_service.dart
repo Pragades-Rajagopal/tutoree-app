@@ -19,7 +19,7 @@ class StudentApi {
       Map<String, dynamic> request) async {
     final env = await accessENV(assetsFileName: '.env');
     var response = await http.post(
-      Uri.parse('${env["URL"]}${endpoints["studentTutorList"]}'),
+      Uri.parse('${env["URL"]}${endpoints["sendTutorRequest"]}'),
       body: json.encode(request),
       headers: apiHeader,
     );

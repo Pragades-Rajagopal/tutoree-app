@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tutoree_app/pages/students/feeds.dart';
-import 'package:tutoree_app/pages/students/home.dart';
-import 'package:tutoree_app/pages/students/profile.dart';
+import 'package:tutoree_app/pages/feed/feed_list.dart';
+import 'package:tutoree_app/pages/student/home.dart';
+import 'package:tutoree_app/pages/student/profile.dart';
 
 class StudentPage extends StatefulWidget {
   const StudentPage({super.key});
@@ -42,7 +42,7 @@ class _StudentPageState extends State<StudentPage> {
 
   static final List<Widget> _widget = [
     const StudentHomePage(),
-    const StudentFeedsPage(),
+    const CommonFeedsPage(),
     const StudentProfilePage(),
   ];
 
