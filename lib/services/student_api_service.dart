@@ -27,4 +27,14 @@ class StudentApi {
     TutorRequestResponse result = TutorRequestResponse.fromJson(body);
     return result;
   }
+
+  Future<StudentProfile> getStudentProfile(int studentId) async {
+    final env = await accessENV(assetsFileName: '.env');
+    var response = await http.get(
+        Uri.parse('${env["URL"]}${endpoints["studentProfile"]}/$studentId'));
+    var body = jsonDecode(response.body);
+    var data = body["data"];
+    StudentProfile result = StudentProfile.fromJson(data);
+    return result;
+  }
 }

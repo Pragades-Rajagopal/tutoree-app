@@ -13,10 +13,7 @@ class StudentPage extends StatefulWidget {
 }
 
 class _StudentPageState extends State<StudentPage> {
-  String? userType;
   String? userName;
-  String? userEmail;
-  int? userId;
   var _currentIndex = 0;
   List<String> headers = [
     'home',
@@ -33,10 +30,7 @@ class _StudentPageState extends State<StudentPage> {
   void getTokenData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      userType = prefs.getString("user_type");
-      userEmail = prefs.getString("user_email");
       userName = prefs.getString("user_name");
-      userId = int.parse(prefs.getString("user_id").toString());
     });
   }
 

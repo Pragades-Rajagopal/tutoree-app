@@ -37,6 +37,7 @@ class MyApp extends StatelessWidget {
           "user": (context) =>
               userType == 'tutor' ? const TutorPage() : const StudentPage(),
           "/": (context) => const LoginPage(),
+          "studentHome": (context) => const StudentPage(),
         });
   }
 }

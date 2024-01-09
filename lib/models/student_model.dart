@@ -43,3 +43,31 @@ class TutorRequestResponse {
     message = json["message"];
   }
 }
+
+class StudentProfile {
+  int? studentId;
+  String? name;
+  String? email;
+  int? mobileNum;
+  String? type;
+  List interests = [];
+  List feeds = [];
+
+  StudentProfile({
+    this.studentId,
+    this.name,
+    this.email,
+    this.mobileNum,
+    this.type,
+  });
+
+  StudentProfile.fromJson(Map<String, dynamic> json) {
+    studentId = json["student_id"];
+    name = json["name"];
+    email = json["email"];
+    mobileNum = json["mobile_number"];
+    type = json["type"];
+    interests.addAll(json["interests"]);
+    feeds.addAll(json["feeds"]);
+  }
+}

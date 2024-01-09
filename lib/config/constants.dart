@@ -8,6 +8,7 @@ Map<String, String> endpoints = {
   "resetPassword": "/api/reset-password",
   "studentTutorList": "/api/student/tutor-list",
   "sendTutorRequest": "/api/student/request",
+  "studentProfile": "/api/student/interest",
   "feed": "/api/feed",
 };
 
