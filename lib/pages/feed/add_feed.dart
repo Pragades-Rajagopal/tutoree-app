@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutoree_app/config/constants.dart';
 import 'package:tutoree_app/models/feeds_model.dart';
-import 'package:tutoree_app/pages/student.dart';
 import 'package:tutoree_app/services/feed_api_service.dart';
 import 'package:tutoree_app/utils/common_utils.dart';
 
@@ -67,7 +66,7 @@ class _AddFeedPageState extends State<AddFeedPage> {
         alertDialog["commonSuccess"]!,
         alertDialog["addFeedSuccess"]!,
       );
-      Get.to('/StudentPage');
+      Get.offAndToNamed('studentHome');
     }
   }
 
@@ -174,25 +173,6 @@ class _AddFeedPageState extends State<AddFeedPage> {
                           height: 0,
                         ),
                       ),
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Get.offAll(() => const StudentPage());
-                },
-                child: const Text(
-                  'cancel',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Color(0xFF2756FD),
-                    fontSize: 20,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w400,
-                    height: 0,
-                  ),
-                ),
               ),
             ],
           ),
