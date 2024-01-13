@@ -1,3 +1,22 @@
+/// Model to get the list of students
+/// for a tutor
+class StudentList {
+  List<Map<String, dynamic>> data = [];
+
+  StudentList.fromJson(List<dynamic> json) {
+    for (var i = 0; i < json.length; i++) {
+      data.add({
+        "tutorId": json[i]["tutor_id"],
+        "studentName": json[i]["name"],
+        "email": json[i]["email"],
+        "mobile_no": json[i]["mobile_no"],
+        "interests": json[i]["interests"],
+        "studentId": json[i]["student_id"],
+      });
+    }
+  }
+}
+
 class TutorProfile {
   int? tutorId;
   String? name;

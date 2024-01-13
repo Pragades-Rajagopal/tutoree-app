@@ -19,6 +19,7 @@ class _TutorProfilePageState extends State<TutorProfilePage> {
   List interests = [];
   List feeds = [];
   String _interestsHeader = 'no interests! try adding some courses';
+  bool _isApiLoading = true;
 
   @override
   void initState() {
@@ -35,10 +36,11 @@ class _TutorProfilePageState extends State<TutorProfilePage> {
   }
 
   Future<void> getStudentProfileDo(int userId) async {
-    tutorProfile = await apiService.getStudentProfile(userId);
+    tutorProfile = await apiService.getTutorProfile(userId);
     setState(() {
       feeds.addAll(tutorProfile!.feeds);
       interests.addAll(tutorProfile!.interests);
+      _isApiLoading = false;
     });
     _changeInterestHeader();
   }
@@ -53,200 +55,244 @@ class _TutorProfilePageState extends State<TutorProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
-                child: Text(
-                  '${tutorProfile?.email}',
-                  style: const TextStyle(
-                    fontSize: 18.0,
-                  ),
-                ),
+      body: _isApiLoading
+          ? const Center(
+              child: CircularProgressIndicator(
+                color: Colors.black,
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(4, 6, 0, 0),
-                child: Text(
-                  '${tutorProfile?.mobileNum}',
-                  style: const TextStyle(
-                    fontSize: 18.0,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(4, 6, 0, 0),
-                child: Text(
-                  '${tutorProfile?.bio}',
-                  style: const TextStyle(
-                    fontSize: 14.0,
-                    fontStyle: FontStyle.italic,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(4, 6, 0, 0),
-                child: Text(
-                  '${tutorProfile?.websites}',
-                  style: const TextStyle(
-                    fontSize: 14.0,
-                    fontStyle: FontStyle.italic,
-                  ),
-                ),
-              ),
-              Container(
-                height: 0.8,
-                width: 1000.0,
-                alignment: Alignment.center,
-                color: Colors.grey.shade400,
-                margin: const EdgeInsets.fromLTRB(4, 8, 4, 8),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
-                child: Text(
-                  _interestsHeader,
-                  style: const TextStyle(
-                    fontSize: 14.0,
-                    color: Color(0xFF616161),
-                  ),
-                ),
-              ),
-              Wrap(
-                children: List<Widget>.generate(
-                  interests.length,
-                  (int index) {
-                    return SizedBox(
-                      height: 42.0,
-                      child: Chip(
-                        label: Text(
-                          interests[index]["courseName"],
-                          style: const TextStyle(
-                            fontSize: 12.0,
-                          ),
+            )
+          : SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
+                      child: Text(
+                        '${tutorProfile?.email}',
+                        style: const TextStyle(
+                          fontSize: 18.0,
                         ),
-                        backgroundColor: Colors.grey.shade200,
-                      ),
-                    );
-                  },
-                ).toList(),
-              ),
-              Container(
-                height: 0.8,
-                width: 1000.0,
-                alignment: Alignment.center,
-                color: Colors.grey.shade400,
-                margin: const EdgeInsets.fromLTRB(4, 8, 4, 8),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
-                child: Text(
-                  'feeds (${feeds.length})',
-                  style: const TextStyle(
-                    fontSize: 14.0,
-                    color: Color(0xFF616161),
-                  ),
-                ),
-              ),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: feeds.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 2.0,
-                      vertical: 5.0,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      side: BorderSide(
-                        color: Colors.grey.shade300,
-                        width: 1.5,
                       ),
                     ),
-                    shadowColor: Colors.transparent,
-                    child: Container(
-                      padding: const EdgeInsets.fromLTRB(14, 8, 14, 8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                            child: Text(
-                              feeds[index]["content"],
-                              style: const TextStyle(
-                                fontSize: 14.0,
-                                color: Colors.black,
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(4, 6, 0, 0),
+                      child: Text(
+                        '${tutorProfile?.mobileNum}',
+                        style: const TextStyle(
+                          fontSize: 18.0,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(4, 6, 0, 0),
+                      child: Text(
+                        tutorProfile?.bio == ""
+                            ? "(add bio)"
+                            : '${tutorProfile?.bio}',
+                        style: const TextStyle(
+                          fontSize: 14.0,
+                          fontStyle: FontStyle.italic,
+                          color: Color(0xFF616161),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(4, 6, 0, 0),
+                      child: Text(
+                        tutorProfile?.websites == ""
+                            ? "(add websites)"
+                            : '${tutorProfile?.websites}',
+                        style: const TextStyle(
+                          fontSize: 14.0,
+                          fontStyle: FontStyle.italic,
+                          color: Color(0xFF616161),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 0.8,
+                      width: 1000.0,
+                      alignment: Alignment.center,
+                      color: Colors.grey.shade400,
+                      margin: const EdgeInsets.fromLTRB(4, 8, 4, 8),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(4, 6, 0, 0),
+                      child: Text(
+                        tutorProfile?.mailSubscription == 0
+                            ? "not subscribed to mail"
+                            : 'subscribed to mail',
+                        style: const TextStyle(
+                          fontSize: 14.0,
+                          fontStyle: FontStyle.italic,
+                          color: Color(0xFF616161),
+                        ),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(4, 0, 0, 0),
+                      child: Text(
+                        '*if subscribed, mails will be received whenever\n  students send a request',
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 0.8,
+                      width: 1000.0,
+                      alignment: Alignment.center,
+                      color: Colors.grey.shade400,
+                      margin: const EdgeInsets.fromLTRB(4, 8, 4, 8),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
+                      child: Text(
+                        _interestsHeader,
+                        style: const TextStyle(
+                          fontSize: 14.0,
+                          color: Color(0xFF616161),
+                        ),
+                      ),
+                    ),
+                    Wrap(
+                      children: List<Widget>.generate(
+                        interests.length,
+                        (int index) {
+                          return SizedBox(
+                            height: 42.0,
+                            child: Chip(
+                              label: Text(
+                                interests[index]["courseName"],
+                                style: const TextStyle(
+                                  fontSize: 12.0,
+                                ),
                               ),
+                              backgroundColor: Colors.grey.shade200,
+                            ),
+                          );
+                        },
+                      ).toList(),
+                    ),
+                    Container(
+                      height: 0.8,
+                      width: 1000.0,
+                      alignment: Alignment.center,
+                      color: Colors.grey.shade400,
+                      margin: const EdgeInsets.fromLTRB(4, 8, 4, 8),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
+                      child: Text(
+                        'feeds (${feeds.length})',
+                        style: const TextStyle(
+                          fontSize: 14.0,
+                          color: Color(0xFF616161),
+                        ),
+                      ),
+                    ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: feeds.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 2.0,
+                            vertical: 5.0,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            side: BorderSide(
+                              color: Colors.grey.shade300,
+                              width: 1.5,
                             ),
                           ),
-                          Container(
-                            color: Colors.grey.shade100,
-                            height: 2,
-                            width: 350,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                feeds[index]["created_by"],
-                                style: const TextStyle(
-                                  fontSize: 12.0,
-                                  color: Color(0xFF757575),
+                          shadowColor: Colors.transparent,
+                          child: Container(
+                            padding: const EdgeInsets.fromLTRB(14, 8, 14, 8),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                                  child: Text(
+                                    feeds[index]["content"],
+                                    style: const TextStyle(
+                                      fontSize: 14.0,
+                                      color: Colors.black,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                feeds[index]["date_"],
-                                style: const TextStyle(
-                                  fontSize: 12.0,
-                                  color: Color(0xFF757575),
+                                Container(
+                                  color: Colors.grey.shade100,
+                                  height: 2,
+                                  width: 350,
                                 ),
-                              ),
-                            ],
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      feeds[index]["created_by"],
+                                      style: const TextStyle(
+                                        fontSize: 12.0,
+                                        color: Color(0xFF757575),
+                                      ),
+                                    ),
+                                    Text(
+                                      feeds[index]["date_"],
+                                      style: const TextStyle(
+                                        fontSize: 12.0,
+                                        color: Color(0xFF757575),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ],
+                        );
+                      },
+                    ),
+                    Container(
+                      height: 0.5,
+                      width: 1000.0,
+                      alignment: Alignment.center,
+                      color: Colors.grey.shade400,
+                      margin: const EdgeInsets.fromLTRB(4, 24, 4, 8),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        logoutDo();
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.fromLTRB(4, 0, 0, 0),
+                        child: Text(
+                          'logout',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w400,
+                            height: 0,
+                          ),
+                        ),
                       ),
                     ),
-                  );
-                },
-              ),
-              Container(
-                height: 0.5,
-                width: 1000.0,
-                alignment: Alignment.center,
-                color: Colors.grey.shade400,
-                margin: const EdgeInsets.fromLTRB(4, 24, 4, 8),
-              ),
-              GestureDetector(
-                onTap: () {
-                  logoutDo();
-                },
-                child: const Padding(
-                  padding: EdgeInsets.fromLTRB(4, 0, 0, 0),
-                  child: Text(
-                    'logout',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color(0xFF2756FD),
-                      fontSize: 20,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w400,
-                      height: 0,
-                    ),
-                  ),
+                    const SizedBox(
+                      height: 20.0,
+                    )
+                  ],
                 ),
               ),
-              const SizedBox(
-                height: 20.0,
-              )
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 

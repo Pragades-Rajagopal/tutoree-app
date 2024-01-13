@@ -50,7 +50,7 @@ class _TutorPageState extends State<TutorPage> {
         child: Padding(
           padding: const EdgeInsets.symmetric(
             horizontal: 50.0,
-            vertical: 10.0,
+            vertical: 6.0,
           ),
           child: GNav(
             selectedIndex: _currentIndex,
@@ -71,11 +71,11 @@ class _TutorPageState extends State<TutorPage> {
                 text: 'home',
               ),
               GButton(
-                icon: Icons.markunread_mailbox_rounded,
+                icon: Icons.newspaper_sharp,
                 text: 'feeds',
               ),
               GButton(
-                icon: Icons.manage_accounts_rounded,
+                icon: Icons.account_circle_rounded,
                 text: 'profile',
               ),
             ],
