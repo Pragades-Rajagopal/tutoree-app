@@ -19,6 +19,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
   TutorRequestResponse? tutorReqRes;
   bool _loadingIndicator = false;
   int selectedItem = -1;
+  bool _isApiLoading = true;
 
   @override
   void initState() {
@@ -44,6 +45,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
     TutorList tutorList = await apiService.getTutorlist(studentId);
     setState(() {
       lists.addAll(tutorList.data);
+      _isApiLoading = false;
     });
   }
 
@@ -81,21 +83,27 @@ class _StudentHomePageState extends State<StudentHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('(${lists.length}) tutors based on your interests...'),
-              const SizedBox(
-                height: 6.0,
+      body: _isApiLoading
+          ? const Center(
+              child: CircularProgressIndicator(
+                color: Colors.black,
               ),
-              tutorListView(lists),
-            ],
-          ),
-        ),
-      ),
+            )
+          : SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('(${lists.length}) tutors based on your interests...'),
+                    const SizedBox(
+                      height: 6.0,
+                    ),
+                    tutorListView(lists),
+                  ],
+                ),
+              ),
+            ),
     );
   }
 
@@ -152,9 +160,9 @@ class _StudentHomePageState extends State<StudentHomePage> {
                 subtitle: Padding(
                   padding: const EdgeInsets.fromLTRB(0, 2, 0, 2),
                   child: Text(
-                    lists[index]["bio"],
+                    '${lists[index]["bio"]}\n${lists[index]["websites"]}',
                     style: const TextStyle(
-                      fontSize: 12.0,
+                      fontSize: 14.0,
                       fontStyle: FontStyle.italic,
                       color: Color(0xFF616161),
                     ),
@@ -171,19 +179,6 @@ class _StudentHomePageState extends State<StudentHomePage> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         lists[index]["courses"],
-                        style: const TextStyle(
-                          fontSize: 14.0,
-                          color: Color(0xFF616161),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 4, 10, 4),
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        lists[index]["websites"],
                         style: const TextStyle(
                           fontSize: 14.0,
                           color: Color(0xFF616161),
