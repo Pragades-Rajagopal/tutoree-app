@@ -20,6 +20,7 @@ class _AddFeedPageState extends State<AddFeedPage> {
   var buttonColor = const Color.fromARGB(255, 214, 172, 255);
   bool _loadingIndicator = false;
   var userName = '';
+  var userType = '';
   var userId = 0;
 
   AddFeedResponse? addFeedResponse;
@@ -35,6 +36,7 @@ class _AddFeedPageState extends State<AddFeedPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       userName = prefs.getString("user_name")!;
+      userType = prefs.getString("user_type")!;
       userId = int.parse(prefs.getString("user_id").toString());
     });
   }
@@ -66,7 +68,12 @@ class _AddFeedPageState extends State<AddFeedPage> {
         alertDialog["commonSuccess"]!,
         alertDialog["addFeedSuccess"]!,
       );
-      Get.offAndToNamed('studentHome');
+      // Route to respective page based on user type
+      if (userType == 'student') {
+        Get.offAndToNamed('studentHome');
+      } else if (userType == 'tutor') {
+        Get.offAndToNamed('tutorHome');
+      }
     }
   }
 

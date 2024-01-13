@@ -24,20 +24,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          textTheme: TextTheme(
-            bodyLarge: GoogleFonts.poppins(),
-            bodyMedium: GoogleFonts.poppins(),
-            bodySmall: GoogleFonts.poppins(),
-          ),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        textTheme: TextTheme(
+          bodyLarge: GoogleFonts.poppins(),
+          bodyMedium: GoogleFonts.poppins(),
+          bodySmall: GoogleFonts.poppins(),
         ),
-        initialRoute: token == null ? "/" : "user",
-        routes: {
-          "user": (context) =>
-              userType == 'tutor' ? const TutorPage() : const StudentPage(),
-          "/": (context) => const LoginPage(),
-          "studentHome": (context) => const StudentPage(),
-        });
+      ),
+      initialRoute: token == null ? "/" : "user",
+      routes: {
+        "user": (context) =>
+            userType == 'tutor' ? const TutorPage() : const StudentPage(),
+        "/": (context) => const LoginPage(),
+        "studentHome": (context) => const StudentPage(),
+        "tutorHome": (context) => const TutorPage(),
+      },
+    );
   }
 }

@@ -18,6 +18,7 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
   FeedsListResponse? feedsListRes;
   FeedsApi apiService = FeedsApi();
   List<Map<String, dynamic>> feedList = [];
+  bool _isApiLoading = true;
 
   @override
   void initState() {
@@ -53,6 +54,7 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
     feedsListRes = await apiService.getGlobalFeeds();
     setState(() {
       feedList.addAll(feedsListRes!.data);
+      _isApiLoading = false;
     });
   }
 
@@ -60,22 +62,28 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        controller: _scrollController,
-        padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('global feeds...'),
-              const SizedBox(
-                height: 6.0,
+      body: _isApiLoading
+          ? const Center(
+              child: CircularProgressIndicator(
+                color: Colors.black,
               ),
-              feedsWidget(feedList),
-            ],
-          ),
-        ),
-      ),
+            )
+          : SingleChildScrollView(
+              controller: _scrollController,
+              padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('global feeds...'),
+                    const SizedBox(
+                      height: 6.0,
+                    ),
+                    feedsWidget(feedList),
+                  ],
+                ),
+              ),
+            ),
       floatingActionButton: _addIconVisible
           ? FloatingActionButton(
               onPressed: () {
