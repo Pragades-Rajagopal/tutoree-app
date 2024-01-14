@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutoree_app/models/student_model.dart';
 import 'package:tutoree_app/pages/login.dart';
+import 'package:tutoree_app/pages/student/edit_profile.dart';
 import 'package:tutoree_app/services/student_api_service.dart';
 
 class StudentProfilePage extends StatefulWidget {
@@ -131,6 +132,36 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                           );
                         },
                       ).toList(),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(() => const StudentEditProfilePage());
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(4, 8, 0, 8),
+                        child: Container(
+                          height: 30,
+                          width: 140,
+                          alignment: Alignment.center,
+                          decoration: const BoxDecoration(
+                            color: Color(0xFF616161),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(30),
+                            ),
+                          ),
+                          child: const Text(
+                            'edit interests',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w400,
+                              height: 0,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                     Container(
                       height: 0.8,

@@ -181,7 +181,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
                         lists[index]["courses"],
                         style: const TextStyle(
                           fontSize: 14.0,
-                          color: Color(0xFF616161),
+                          color: Color(0xFF3C3C3C),
                         ),
                       ),
                     ),
