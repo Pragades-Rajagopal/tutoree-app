@@ -6,7 +6,11 @@ import 'package:tutoree_app/pages/student/home.dart';
 import 'package:tutoree_app/pages/student/profile.dart';
 
 class StudentPage extends StatefulWidget {
-  const StudentPage({super.key});
+  final int index;
+  const StudentPage({
+    super.key,
+    required this.index,
+  });
 
   @override
   State<StudentPage> createState() => _StudentPageState();
@@ -25,6 +29,9 @@ class _StudentPageState extends State<StudentPage> {
   void initState() {
     super.initState();
     getTokenData();
+    setState(() {
+      _currentIndex = widget.index;
+    });
   }
 
   void getTokenData() async {

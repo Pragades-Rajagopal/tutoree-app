@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tutoree_app/config/constants.dart';
+import 'package:tutoree_app/models/feeds_model.dart';
 import 'package:tutoree_app/models/student_model.dart';
 import 'package:tutoree_app/pages/login.dart';
 import 'package:tutoree_app/pages/student/edit_profile.dart';
+import 'package:tutoree_app/services/feed_api_service.dart';
 import 'package:tutoree_app/services/student_api_service.dart';
+import 'package:tutoree_app/utils/common_utils.dart';
 
 class StudentProfilePage extends StatefulWidget {
   const StudentProfilePage({super.key});
@@ -16,7 +20,9 @@ class StudentProfilePage extends StatefulWidget {
 class _StudentProfilePageState extends State<StudentProfilePage> {
   int _userId = 0;
   StudentApi apiService = StudentApi();
+  FeedsApi feedsApiService = FeedsApi();
   StudentProfile? studentProfile;
+  DeleteFeedResponse? deleteFeedRes;
   List interests = [];
   List feeds = [];
   String _interestsHeader = 'no interests! try adding some courses';
@@ -39,11 +45,29 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
   Future<void> getStudentProfileDo(int userId) async {
     studentProfile = await apiService.getStudentProfile(userId);
     setState(() {
+      feeds.clear();
+      interests.clear();
       feeds.addAll(studentProfile!.feeds);
       interests.addAll(studentProfile!.interests);
       _isApiLoading = false;
     });
     _changeInterestHeader();
+  }
+
+  Future<void> deleteFeedDo(int id) async {
+    deleteFeedRes = await feedsApiService.deleteFeed(id);
+    if (deleteFeedRes!.statusCode == 400) {
+      errorSnackBar(
+        alertDialog['oops']!,
+        alertDialog['deleteFeedError']!,
+      );
+    } else if (deleteFeedRes!.statusCode == 200) {
+      successSnackBar(
+        alertDialog['commonSuccess']!,
+        alertDialog['deleteFeed']!,
+      );
+      getStudentProfileDo(_userId);
+    }
   }
 
   Future<void> logoutDo() async {
@@ -144,7 +168,7 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                           width: 140,
                           alignment: Alignment.center,
                           decoration: const BoxDecoration(
-                            color: Color(0xFF616161),
+                            color: Colors.black,
                             borderRadius: BorderRadius.all(
                               Radius.circular(30),
                             ),
@@ -203,16 +227,33 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                                  child: Text(
-                                    feeds[index]["content"],
-                                    style: const TextStyle(
-                                      fontSize: 14.0,
-                                      color: Colors.black,
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 0, 0, 10),
+                                        child: Text(
+                                          feeds[index]["content"],
+                                          style: const TextStyle(
+                                            fontSize: 14.0,
+                                            color: Colors.black,
+                                          ),
+                                          // overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        deleteFeedDo(feeds[index]["id"]);
+                                      },
+                                      child: const Icon(
+                                        Icons.delete_forever_rounded,
+                                        size: 22.0,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 Container(
                                   color: Colors.grey.shade100,

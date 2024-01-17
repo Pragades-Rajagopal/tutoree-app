@@ -77,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
       // Redirect based on user type
       userType == 'tutor'
           ? Get.offAll(() => const TutorPage())
-          : Get.offAll(() => const StudentPage());
+          : Get.offAll(() => const StudentPage(index: 0));
     } else if (loginRes?.statusCode == 401) {
       errorSnackBar(
         alertDialog['loginErrorTitle']!,
