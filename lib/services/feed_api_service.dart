@@ -26,4 +26,14 @@ class FeedsApi {
     AddFeedResponse result = AddFeedResponse.fromJson(body);
     return result;
   }
+
+  Future<DeleteFeedResponse> deleteFeed(int id) async {
+    final env = await accessENV(assetsFileName: '.env');
+    var response = await http.delete(
+      Uri.parse('${env["URL"]}${endpoints["feed"]}/$id'),
+    );
+    var body = jsonDecode(response.body);
+    DeleteFeedResponse result = DeleteFeedResponse.fromJson(body);
+    return result;
+  }
 }

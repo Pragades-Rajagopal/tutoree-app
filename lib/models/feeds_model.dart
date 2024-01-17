@@ -29,3 +29,18 @@ class AddFeedResponse {
     message = json["message"];
   }
 }
+
+class DeleteFeedResponse {
+  int? statusCode;
+  String? message;
+
+  DeleteFeedResponse({
+    this.statusCode,
+    this.message,
+  });
+
+  DeleteFeedResponse.fromJson(Map<String, dynamic> json) {
+    statusCode = json["statusCode"];
+    message = json["message"];
+  }
+}

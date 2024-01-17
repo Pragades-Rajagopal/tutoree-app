@@ -70,7 +70,7 @@ class _AddFeedPageState extends State<AddFeedPage> {
       );
       // Route to respective page based on user type
       if (userType == 'student') {
-        Get.offAndToNamed('studentHome');
+        Get.offAndToNamed('studentHomeFeed');
       } else if (userType == 'tutor') {
         Get.offAndToNamed('tutorHome');
       }
