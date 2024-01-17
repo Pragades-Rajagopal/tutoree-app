@@ -12,6 +12,8 @@ Map<String, String> endpoints = {
   "feed": "/api/feed",
   "tutorProfile": "/api/tutor/profile",
   "studentListForTutor": "/api/tutor/request",
+  "course": "/api/courses",
+  "addStudentInterest": "/api/student/interest",
 };
 
 Map<String, String> apiHeader = {
@@ -43,6 +45,11 @@ Map<String, String> alertDialog = {
   'tutorReqSuccess': 'request sent successfully',
   'addFeedError': 'unable to add feed at this moment',
   'addFeedSuccess': 'feed added successfully',
+  'addIntrstCheckError':
+      'Either the user is not a student or not yet activated as student',
+  'interestAdded': 'Interests added',
+  'deleteFeed': 'feed deleted successfully',
+  'deleteFeedError': 'Error while deleting feed',
 };
 
 Map<String, String> responseErrors = {

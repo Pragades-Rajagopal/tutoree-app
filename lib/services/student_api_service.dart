@@ -37,4 +37,17 @@ class StudentApi {
     StudentProfile result = StudentProfile.fromJson(data);
     return result;
   }
+
+  Future<PostStudentInterestRes> addInterests(
+      Map<String, dynamic> request) async {
+    final env = await accessENV(assetsFileName: '.env');
+    var response = await http.post(
+      Uri.parse('${env["URL"]}${endpoints["addStudentInterest"]}'),
+      body: json.encode(request),
+      headers: apiHeader,
+    );
+    var body = jsonDecode(response.body);
+    PostStudentInterestRes result = PostStudentInterestRes.fromJson(body);
+    return result;
+  }
 }

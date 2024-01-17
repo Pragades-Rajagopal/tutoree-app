@@ -71,3 +71,29 @@ class StudentProfile {
     feeds.addAll(json["feeds"]);
   }
 }
+
+class PostStudentInterestReq {
+  int? studentId;
+  List<int>? courseIds;
+
+  PostStudentInterestReq({
+    this.studentId,
+    this.courseIds,
+  });
+}
+
+/// Response model to add student interests
+class PostStudentInterestRes {
+  int? statusCode;
+  String? message;
+
+  PostStudentInterestRes({
+    this.statusCode,
+    this.message,
+  });
+
+  PostStudentInterestRes.fromJson(Map<String, dynamic> json) {
+    statusCode = json["statusCode"];
+    message = json["message"];
+  }
+}
