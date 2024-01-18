@@ -35,6 +35,10 @@ class _StudentEditProfilePageState extends State<StudentEditProfilePage> {
   void initState() {
     super.initState();
     initStateMethods();
+    // setting existing values
+    setState(() {
+      selectCourses.addAll(widget.studentInterests);
+    });
   }
 
   void initStateMethods() async {
