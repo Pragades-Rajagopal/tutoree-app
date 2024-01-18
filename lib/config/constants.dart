@@ -64,6 +64,7 @@ Map<String, String> textFieldErrors = {
   'mandatory': 'this field is mandatory',
   'otp_mandatory': 'enter 4 digit otp',
   'add_feed_mandatory': 'enter something',
+  'add_interest_mandatory': 'add atleast one interest'
 };
 
 var enabledBorder_ = OutlineInputBorder(

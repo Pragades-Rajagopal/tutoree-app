@@ -24,6 +24,7 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
   StudentProfile? studentProfile;
   DeleteFeedResponse? deleteFeedRes;
   List interests = [];
+  List<int> interestIds = [0];
   List feeds = [];
   String _interestsHeader = 'no interests! try adding some courses';
   bool _isApiLoading = true;
@@ -49,6 +50,10 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
       interests.clear();
       feeds.addAll(studentProfile!.feeds);
       interests.addAll(studentProfile!.interests);
+      interestIds.clear();
+      for (var element in studentProfile!.interests) {
+        interestIds.add(element["courseId"]);
+      }
       _isApiLoading = false;
     });
     _changeInterestHeader();
@@ -159,7 +164,9 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Get.to(() => const StudentEditProfilePage());
+                        Get.to(() => StudentEditProfilePage(
+                              studentInterests: interestIds,
+                            ));
                       },
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(4, 8, 0, 8),
@@ -173,10 +180,12 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                               Radius.circular(30),
                             ),
                           ),
-                          child: const Text(
-                            'edit interests',
+                          child: Text(
+                            interests.isEmpty
+                                ? 'add interests'
+                                : 'edit interests',
                             textAlign: TextAlign.center,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 18,
                               fontFamily: 'Poppins',
@@ -249,8 +258,9 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                                         deleteFeedDo(feeds[index]["id"]);
                                       },
                                       child: const Icon(
-                                        Icons.delete_forever_rounded,
+                                        Icons.delete,
                                         size: 22.0,
+                                        color: Colors.black87,
                                       ),
                                     ),
                                   ],

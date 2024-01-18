@@ -112,7 +112,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
       return Container(
         alignment: Alignment.center,
         child: const Text(
-          'oops! looks like no tutors available\nat this moment',
+          'oops! looks like no tutors available\nat this moment\n\ntry adding some interests in profile',
           style: TextStyle(
             fontSize: 12.0,
             color: Colors.grey,

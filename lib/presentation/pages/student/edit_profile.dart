@@ -10,19 +10,26 @@ import 'package:tutoree_app/data/services/student_api_service.dart';
 import 'package:tutoree_app/presentation/utils/common_utils.dart';
 
 class StudentEditProfilePage extends StatefulWidget {
-  const StudentEditProfilePage({super.key});
+  final List<int> studentInterests;
+  const StudentEditProfilePage({
+    super.key,
+    required this.studentInterests,
+  });
 
   @override
   State<StudentEditProfilePage> createState() => _StudentEditProfilePageState();
 }
 
 class _StudentEditProfilePageState extends State<StudentEditProfilePage> {
+  final GlobalKey<FormFieldState> _key = GlobalKey<FormFieldState>();
   int userId = 0;
   List<Course> courseList = [];
   CourseApi courseApiService = CourseApi();
   List<int> selectCourses = [];
   StudentApi studentApiService = StudentApi();
   PostStudentInterestRes? interestRes;
+  bool _loadingIndicator = false;
+  var _buttonColor = Colors.black;
 
   @override
   void initState() {
@@ -33,6 +40,13 @@ class _StudentEditProfilePageState extends State<StudentEditProfilePage> {
   void initStateMethods() async {
     getTokenData();
     await getCourseListDo();
+  }
+
+  void _stopLoadingIndicator() {
+    setState(() {
+      _loadingIndicator = false;
+      _buttonColor = Colors.black;
+    });
   }
 
   void getTokenData() async {
@@ -65,6 +79,7 @@ class _StudentEditProfilePageState extends State<StudentEditProfilePage> {
         alertDialog['commonError']!,
       );
     } else if (interestRes?.statusCode == 200) {
+      _stopLoadingIndicator();
       successSnackBar(
         alertDialog['commonSuccess']!,
         alertDialog['interestAdded']!,
@@ -77,31 +92,87 @@ class _StudentEditProfilePageState extends State<StudentEditProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(10, 80, 10, 40),
+        padding: const EdgeInsets.fromLTRB(10, 90, 10, 40),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('select courses'),
               SizedBox(
                 width: 350,
                 child: MultiSelectDialogField(
-                  title: const Text('select courses'),
+                  title: const Text('select interests'),
+                  buttonText: const Text('select interests'),
+                  key: _key,
                   searchable: true,
+                  selectedColor: Colors.black54,
+                  selectedItemsTextStyle: const TextStyle(
+                    color: Colors.white,
+                  ),
                   items: courseList
                       .map((e) => MultiSelectItem(e.id, e.name))
                       .toList(),
                   listType: MultiSelectListType.CHIP,
+                  initialValue: widget.studentInterests,
                   onConfirm: (values) {
                     selectCourses = values;
-                    addInterestsDo(userId, selectCourses);
+                  },
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return textFieldErrors["add_interest_mandatory"];
+                    }
+                    return null;
                   },
                 ),
               ),
               const SizedBox(
                 height: 10,
               ),
-              const Text('Add'),
+              TextButton(
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: _buttonColor,
+                  minimumSize: const Size(100, 40),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                  ),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(30.0),
+                    ),
+                  ),
+                ),
+                onPressed: () {
+                  if (_key.currentState!.validate()) {
+                    setState(() {
+                      _loadingIndicator = true;
+                      _buttonColor = Colors.white;
+                      addInterestsDo(userId, selectCourses);
+                    });
+                  }
+                },
+                child: _loadingIndicator
+                    ? Container(
+                        height: 50,
+                        width: 60,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(30),
+                          ),
+                        ),
+                        child: loadingIndicator(),
+                      )
+                    : const Text(
+                        'update',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w400,
+                          height: 0,
+                        ),
+                      ),
+              )
             ],
           ),
         ),
