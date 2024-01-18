@@ -1,5 +1,5 @@
 import 'package:tutoree_app/config/dotenv_config.dart';
-import 'package:tutoree_app/models/registration_model.dart';
+import 'package:tutoree_app/data/models/registration_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:tutoree_app/config/constants.dart';

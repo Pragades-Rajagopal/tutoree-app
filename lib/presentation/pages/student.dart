@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tutoree_app/pages/feed/feed_list.dart';
-import 'package:tutoree_app/pages/tutor/home.dart';
-import 'package:tutoree_app/pages/tutor/profile.dart';
+import 'package:tutoree_app/presentation/pages/feed/feed_list.dart';
+import 'package:tutoree_app/presentation/pages/student/home.dart';
+import 'package:tutoree_app/presentation/pages/student/profile.dart';
 
-class TutorPage extends StatefulWidget {
-  const TutorPage({super.key});
+class StudentPage extends StatefulWidget {
+  final int index;
+  const StudentPage({
+    super.key,
+    required this.index,
+  });
 
   @override
-  State<TutorPage> createState() => _TutorPageState();
+  State<StudentPage> createState() => _StudentPageState();
 }
 
-class _TutorPageState extends State<TutorPage> {
+class _StudentPageState extends State<StudentPage> {
   String? userName;
   var _currentIndex = 0;
   List<String> headers = [
@@ -25,6 +29,9 @@ class _TutorPageState extends State<TutorPage> {
   void initState() {
     super.initState();
     getTokenData();
+    setState(() {
+      _currentIndex = widget.index;
+    });
   }
 
   void getTokenData() async {
@@ -35,9 +42,9 @@ class _TutorPageState extends State<TutorPage> {
   }
 
   static final List<Widget> _widget = [
-    const TutorHomePage(),
+    const StudentHomePage(),
     const CommonFeedsPage(),
-    const TutorProfilePage(),
+    const StudentProfilePage(),
   ];
 
   @override

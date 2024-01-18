@@ -2,7 +2,7 @@ import 'package:tutoree_app/config/dotenv_config.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:tutoree_app/config/constants.dart';
-import 'package:tutoree_app/models/feeds_model.dart';
+import 'package:tutoree_app/data/models/feeds_model.dart';
 
 class FeedsApi {
   Future<FeedsListResponse> getGlobalFeeds() async {

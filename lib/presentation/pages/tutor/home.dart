@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tutoree_app/models/tutor_model.dart';
-import 'package:tutoree_app/services/tutor_api_service.dart';
+import 'package:tutoree_app/data/models/tutor_model.dart';
+import 'package:tutoree_app/data/services/tutor_api_service.dart';
 
 class TutorHomePage extends StatefulWidget {
   const TutorHomePage({super.key});

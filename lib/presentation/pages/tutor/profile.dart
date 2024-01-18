@@ -1,28 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tutoree_app/config/constants.dart';
-import 'package:tutoree_app/models/feeds_model.dart';
-import 'package:tutoree_app/models/student_model.dart';
-import 'package:tutoree_app/pages/login.dart';
-import 'package:tutoree_app/pages/student/edit_profile.dart';
-import 'package:tutoree_app/services/feed_api_service.dart';
-import 'package:tutoree_app/services/student_api_service.dart';
-import 'package:tutoree_app/utils/common_utils.dart';
+import 'package:tutoree_app/data/models/tutor_model.dart';
+import 'package:tutoree_app/presentation/pages/login.dart';
+import 'package:tutoree_app/data/services/tutor_api_service.dart';
 
-class StudentProfilePage extends StatefulWidget {
-  const StudentProfilePage({super.key});
+class TutorProfilePage extends StatefulWidget {
+  const TutorProfilePage({super.key});
 
   @override
-  State<StudentProfilePage> createState() => _StudentProfilePageState();
+  State<TutorProfilePage> createState() => _TutorProfilePageState();
 }
 
-class _StudentProfilePageState extends State<StudentProfilePage> {
+class _TutorProfilePageState extends State<TutorProfilePage> {
   int _userId = 0;
-  StudentApi apiService = StudentApi();
-  FeedsApi feedsApiService = FeedsApi();
-  StudentProfile? studentProfile;
-  DeleteFeedResponse? deleteFeedRes;
+  TutorApi apiService = TutorApi();
+  TutorProfile? tutorProfile;
   List interests = [];
   List feeds = [];
   String _interestsHeader = 'no interests! try adding some courses';
@@ -43,31 +36,13 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
   }
 
   Future<void> getStudentProfileDo(int userId) async {
-    studentProfile = await apiService.getStudentProfile(userId);
+    tutorProfile = await apiService.getTutorProfile(userId);
     setState(() {
-      feeds.clear();
-      interests.clear();
-      feeds.addAll(studentProfile!.feeds);
-      interests.addAll(studentProfile!.interests);
+      feeds.addAll(tutorProfile!.feeds);
+      interests.addAll(tutorProfile!.interests);
       _isApiLoading = false;
     });
     _changeInterestHeader();
-  }
-
-  Future<void> deleteFeedDo(int id) async {
-    deleteFeedRes = await feedsApiService.deleteFeed(id);
-    if (deleteFeedRes!.statusCode == 400) {
-      errorSnackBar(
-        alertDialog['oops']!,
-        alertDialog['deleteFeedError']!,
-      );
-    } else if (deleteFeedRes!.statusCode == 200) {
-      successSnackBar(
-        alertDialog['commonSuccess']!,
-        alertDialog['deleteFeed']!,
-      );
-      getStudentProfileDo(_userId);
-    }
   }
 
   Future<void> logoutDo() async {
@@ -96,7 +71,7 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
                       child: Text(
-                        '${studentProfile?.email}',
+                        '${tutorProfile?.email}',
                         style: const TextStyle(
                           fontSize: 18.0,
                         ),
@@ -105,16 +80,62 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(4, 6, 0, 0),
                       child: Text(
-                        '${studentProfile?.mobileNum}',
+                        '${tutorProfile?.mobileNum}',
                         style: const TextStyle(
                           fontSize: 18.0,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(4, 6, 0, 0),
+                      child: Text(
+                        tutorProfile?.bio == ""
+                            ? "(add bio)"
+                            : '${tutorProfile?.bio}',
+                        style: const TextStyle(
+                          fontSize: 14.0,
+                          fontStyle: FontStyle.italic,
+                          color: Color(0xFF616161),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(4, 6, 0, 0),
+                      child: Text(
+                        tutorProfile?.websites == ""
+                            ? "(add websites)"
+                            : '${tutorProfile?.websites}',
+                        style: const TextStyle(
+                          fontSize: 14.0,
+                          fontStyle: FontStyle.italic,
+                          color: Color(0xFF616161),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 0.8,
+                      width: 1000.0,
+                      alignment: Alignment.center,
+                      color: Colors.grey.shade400,
+                      margin: const EdgeInsets.fromLTRB(4, 8, 4, 8),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(4, 6, 0, 0),
+                      child: Text(
+                        tutorProfile?.mailSubscription == 0
+                            ? "not subscribed to mail"
+                            : 'subscribed to mail',
+                        style: const TextStyle(
+                          fontSize: 14.0,
+                          fontStyle: FontStyle.italic,
+                          color: Color(0xFF616161),
                         ),
                       ),
                     ),
                     const Padding(
                       padding: EdgeInsets.fromLTRB(4, 0, 0, 0),
                       child: Text(
-                        '*this mobile number will be sent to the requested tutors',
+                        '*if subscribed, mails will be received whenever\n  students send a request',
                         style: TextStyle(
                           fontSize: 12.0,
                           color: Colors.grey,
@@ -157,36 +178,6 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                         },
                       ).toList(),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(() => const StudentEditProfilePage());
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(4, 8, 0, 8),
-                        child: Container(
-                          height: 30,
-                          width: 140,
-                          alignment: Alignment.center,
-                          decoration: const BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(30),
-                            ),
-                          ),
-                          child: const Text(
-                            'edit interests',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w400,
-                              height: 0,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
                     Container(
                       height: 0.8,
                       width: 1000.0,
@@ -227,33 +218,16 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            0, 0, 0, 10),
-                                        child: Text(
-                                          feeds[index]["content"],
-                                          style: const TextStyle(
-                                            fontSize: 14.0,
-                                            color: Colors.black,
-                                          ),
-                                          // overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                                  child: Text(
+                                    feeds[index]["content"],
+                                    style: const TextStyle(
+                                      fontSize: 14.0,
+                                      color: Colors.black,
                                     ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        deleteFeedDo(feeds[index]["id"]);
-                                      },
-                                      child: const Icon(
-                                        Icons.delete_forever_rounded,
-                                        size: 22.0,
-                                      ),
-                                    ),
-                                  ],
+                                  ),
                                 ),
                                 Container(
                                   color: Colors.grey.shade100,

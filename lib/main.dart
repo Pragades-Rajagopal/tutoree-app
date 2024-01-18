@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tutoree_app/pages/login.dart';
+import 'package:tutoree_app/presentation/pages/login.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tutoree_app/pages/student.dart';
-import 'package:tutoree_app/pages/tutor.dart';
+import 'package:tutoree_app/presentation/pages/student.dart';
+import 'package:tutoree_app/presentation/pages/tutor.dart';
 
 String? token;
 String? userType;

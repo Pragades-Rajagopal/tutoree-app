@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutoree_app/config/constants.dart';
-import 'package:tutoree_app/models/student_model.dart';
-import 'package:tutoree_app/services/student_api_service.dart';
-import 'package:tutoree_app/utils/common_utils.dart';
+import 'package:tutoree_app/data/models/student_model.dart';
+import 'package:tutoree_app/data/services/student_api_service.dart';
+import 'package:tutoree_app/presentation/utils/common_utils.dart';
 
 class StudentHomePage extends StatefulWidget {
   const StudentHomePage({super.key});

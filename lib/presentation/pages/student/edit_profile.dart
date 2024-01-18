@@ -3,11 +3,11 @@ import 'package:get/get.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutoree_app/config/constants.dart';
-import 'package:tutoree_app/models/common_model.dart';
-import 'package:tutoree_app/models/student_model.dart';
-import 'package:tutoree_app/services/common_api_service.dart';
-import 'package:tutoree_app/services/student_api_service.dart';
-import 'package:tutoree_app/utils/common_utils.dart';
+import 'package:tutoree_app/data/models/common_model.dart';
+import 'package:tutoree_app/data/models/student_model.dart';
+import 'package:tutoree_app/data/services/common_api_service.dart';
+import 'package:tutoree_app/data/services/student_api_service.dart';
+import 'package:tutoree_app/presentation/utils/common_utils.dart';
 
 class StudentEditProfilePage extends StatefulWidget {
   const StudentEditProfilePage({super.key});

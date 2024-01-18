@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutoree_app/config/constants.dart';
-import 'package:tutoree_app/models/feeds_model.dart';
-import 'package:tutoree_app/services/feed_api_service.dart';
-import 'package:tutoree_app/utils/common_utils.dart';
+import 'package:tutoree_app/data/models/feeds_model.dart';
+import 'package:tutoree_app/data/services/feed_api_service.dart';
+import 'package:tutoree_app/presentation/utils/common_utils.dart';
 
 class AddFeedPage extends StatefulWidget {
   const AddFeedPage({super.key});

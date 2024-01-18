@@ -2,7 +2,7 @@ import 'package:tutoree_app/config/dotenv_config.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:tutoree_app/config/constants.dart';
-import 'package:tutoree_app/models/tutor_model.dart';
+import 'package:tutoree_app/data/models/tutor_model.dart';
 
 class TutorApi {
   Future<StudentList> getStudentListForTutor(int tutorId) async {

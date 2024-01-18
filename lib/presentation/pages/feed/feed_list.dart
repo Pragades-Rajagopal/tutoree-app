@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
-import 'package:tutoree_app/models/feeds_model.dart';
-import 'package:tutoree_app/pages/feed/add_feed.dart';
-import 'package:tutoree_app/services/feed_api_service.dart';
+import 'package:tutoree_app/data/models/feeds_model.dart';
+import 'package:tutoree_app/presentation/pages/feed/add_feed.dart';
+import 'package:tutoree_app/data/services/feed_api_service.dart';
 
 class CommonFeedsPage extends StatefulWidget {
   const CommonFeedsPage({super.key});

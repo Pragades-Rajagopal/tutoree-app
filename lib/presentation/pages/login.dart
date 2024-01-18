@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutoree_app/config/constants.dart';
-import 'package:tutoree_app/models/login_model.dart';
-import 'package:tutoree_app/pages/register.dart';
-import 'package:tutoree_app/pages/reset_password.dart';
-import 'package:tutoree_app/pages/student.dart';
-import 'package:tutoree_app/pages/tutor.dart';
-import 'package:tutoree_app/services/login_api_service.dart';
-import 'package:tutoree_app/utils/common_utils.dart';
-import 'package:tutoree_app/utils/token_validator.dart';
+import 'package:tutoree_app/data/models/login_model.dart';
+import 'package:tutoree_app/presentation/pages/register.dart';
+import 'package:tutoree_app/presentation/pages/reset_password.dart';
+import 'package:tutoree_app/presentation/pages/student.dart';
+import 'package:tutoree_app/presentation/pages/tutor.dart';
+import 'package:tutoree_app/data/services/login_api_service.dart';
+import 'package:tutoree_app/presentation/utils/common_utils.dart';
+import 'package:tutoree_app/config/token_validator.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -95,8 +95,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Get.offAll(() => const TutorPage());
-    // Get.offAll(() => const StudentPage());
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(

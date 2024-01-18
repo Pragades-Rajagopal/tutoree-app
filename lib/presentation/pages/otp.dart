@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tutoree_app/config/constants.dart';
-import 'package:tutoree_app/models/registration_model.dart';
-import 'package:tutoree_app/pages/login.dart';
-import 'package:tutoree_app/services/registration_api_service.dart';
-import 'package:tutoree_app/utils/common_utils.dart';
+import 'package:tutoree_app/data/models/registration_model.dart';
+import 'package:tutoree_app/presentation/pages/login.dart';
+import 'package:tutoree_app/data/services/registration_api_service.dart';
+import 'package:tutoree_app/presentation/utils/common_utils.dart';
 
 class OtpPage extends StatefulWidget {
   final String email;
