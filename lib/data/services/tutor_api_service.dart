@@ -24,4 +24,16 @@ class TutorApi {
     TutorProfile result = TutorProfile.fromJson(data);
     return result;
   }
+
+  Future<PostTutorProfiletRes> addProfile(Map<String, dynamic> request) async {
+    final env = await accessENV(assetsFileName: '.env');
+    var response = await http.post(
+      Uri.parse('${env["URL"]}${endpoints["addTutorProfile"]}'),
+      body: json.encode(request),
+      headers: apiHeader,
+    );
+    var body = jsonDecode(response.body);
+    PostTutorProfiletRes result = PostTutorProfiletRes.fromJson(body);
+    return result;
+  }
 }

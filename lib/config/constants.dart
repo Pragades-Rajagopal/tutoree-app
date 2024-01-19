@@ -14,6 +14,7 @@ Map<String, String> endpoints = {
   "studentListForTutor": "/api/tutor/request",
   "course": "/api/courses",
   "addStudentInterest": "/api/student/interest",
+  "addTutorProfile": "/api/tutor/profile",
 };
 
 Map<String, String> apiHeader = {

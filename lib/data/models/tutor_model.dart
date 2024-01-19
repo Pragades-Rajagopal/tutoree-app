@@ -53,3 +53,35 @@ class TutorProfile {
     feeds.addAll(json["feeds"]);
   }
 }
+
+class PostTutorProfiletReq {
+  int? tutorId;
+  List<int>? courseIds;
+  String? bio;
+  String? websites;
+  int? mailSubscription;
+
+  PostTutorProfiletReq({
+    this.tutorId,
+    this.courseIds,
+    this.bio,
+    this.websites,
+    this.mailSubscription,
+  });
+}
+
+/// Response model to add student interests
+class PostTutorProfiletRes {
+  int? statusCode;
+  String? message;
+
+  PostTutorProfiletRes({
+    this.statusCode,
+    this.message,
+  });
+
+  PostTutorProfiletRes.fromJson(Map<String, dynamic> json) {
+    statusCode = json["statusCode"];
+    message = json["message"];
+  }
+}

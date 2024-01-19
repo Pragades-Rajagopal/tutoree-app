@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutoree_app/data/models/tutor_model.dart';
 import 'package:tutoree_app/presentation/pages/login.dart';
 import 'package:tutoree_app/data/services/tutor_api_service.dart';
+import 'package:tutoree_app/presentation/pages/tutor/edit_profile.dart';
 
 class TutorProfilePage extends StatefulWidget {
   const TutorProfilePage({super.key});
@@ -17,6 +18,7 @@ class _TutorProfilePageState extends State<TutorProfilePage> {
   TutorApi apiService = TutorApi();
   TutorProfile? tutorProfile;
   List interests = [];
+  List<int> interestIds = [0];
   List feeds = [];
   String _interestsHeader = 'no interests! try adding some courses';
   bool _isApiLoading = true;
@@ -40,6 +42,10 @@ class _TutorProfilePageState extends State<TutorProfilePage> {
     setState(() {
       feeds.addAll(tutorProfile!.feeds);
       interests.addAll(tutorProfile!.interests);
+      interestIds.clear();
+      for (var element in tutorProfile!.interests) {
+        interestIds.add(element["courseId"]);
+      }
       _isApiLoading = false;
     });
     _changeInterestHeader();
@@ -90,7 +96,7 @@ class _TutorProfilePageState extends State<TutorProfilePage> {
                       padding: const EdgeInsets.fromLTRB(4, 6, 0, 0),
                       child: Text(
                         tutorProfile?.bio == ""
-                            ? "(add bio)"
+                            ? "(bio)"
                             : '${tutorProfile?.bio}',
                         style: const TextStyle(
                           fontSize: 14.0,
@@ -103,7 +109,7 @@ class _TutorProfilePageState extends State<TutorProfilePage> {
                       padding: const EdgeInsets.fromLTRB(4, 6, 0, 0),
                       child: Text(
                         tutorProfile?.websites == ""
-                            ? "(add websites)"
+                            ? "(websites)"
                             : '${tutorProfile?.websites}',
                         style: const TextStyle(
                           fontSize: 14.0,
@@ -177,6 +183,44 @@ class _TutorProfilePageState extends State<TutorProfilePage> {
                           );
                         },
                       ).toList(),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(() => TutorEditProfilePage(
+                              bio: '${tutorProfile?.bio}',
+                              websites: '${tutorProfile?.websites}',
+                              mailSubscription: int.parse(
+                                  '${tutorProfile?.mailSubscription}'),
+                              tutorInterests: interestIds,
+                            ));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(4, 8, 0, 8),
+                        child: Container(
+                          height: 30,
+                          width: 140,
+                          alignment: Alignment.center,
+                          decoration: const BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(30),
+                            ),
+                          ),
+                          child: Text(
+                            interests.isEmpty
+                                ? 'add interests'
+                                : 'edit interests',
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w400,
+                              height: 0,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                     Container(
                       height: 0.8,
