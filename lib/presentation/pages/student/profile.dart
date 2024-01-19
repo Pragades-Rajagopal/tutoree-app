@@ -60,6 +60,10 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
   }
 
   Future<void> deleteFeedDo(int id) async {
+    // Load page
+    setState(() {
+      _isApiLoading = true;
+    });
     deleteFeedRes = await feedsApiService.deleteFeed(id);
     if (deleteFeedRes!.statusCode == 400) {
       errorSnackBar(
