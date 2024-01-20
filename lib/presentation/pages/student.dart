@@ -102,9 +102,12 @@ class _StudentPageState extends State<StudentPage> {
         color: Colors.black,
         child: Text(
           "Welcome, $userName",
+          style: const TextStyle(
+            fontSize: 16.0,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
-      // centerTitle: true,
     );
   }
 }

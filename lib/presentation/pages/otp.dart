@@ -179,8 +179,7 @@ class _OtpPageState extends State<OtpPage> {
                         'submit',
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 24,
-                          fontFamily: 'Poppins',
+                          fontSize: 22,
                           fontWeight: FontWeight.w400,
                           height: 0,
                         ),
@@ -198,8 +197,7 @@ class _OtpPageState extends State<OtpPage> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Color(0xFF2756FD),
-                    fontSize: 20,
-                    fontFamily: 'Poppins',
+                    fontSize: 18,
                     fontWeight: FontWeight.w400,
                     height: 0,
                   ),

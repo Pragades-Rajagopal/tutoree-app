@@ -383,8 +383,7 @@ class _RegisterState extends State<Register> {
                           'register',
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 24,
-                            fontFamily: 'Poppins',
+                            fontSize: 22,
                             fontWeight: FontWeight.w400,
                             height: 0,
                           ),
@@ -402,8 +401,7 @@ class _RegisterState extends State<Register> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 20,
-                      fontFamily: 'Poppins',
+                      fontSize: 18,
                       fontWeight: FontWeight.w400,
                       height: 0,
                     ),

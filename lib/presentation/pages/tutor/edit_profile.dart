@@ -207,7 +207,6 @@ class _TutorEditProfilePageState extends State<TutorEditProfilePage> {
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 16.0,
-                      fontFamily: 'Poppins',
                     ),
                   ),
                   key: _key,
@@ -280,8 +279,7 @@ class _TutorEditProfilePageState extends State<TutorEditProfilePage> {
                         'update',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 20,
-                          fontFamily: 'Poppins',
+                          fontSize: 18,
                           fontWeight: FontWeight.w400,
                           height: 0,
                         ),

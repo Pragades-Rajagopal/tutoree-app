@@ -171,7 +171,6 @@ class _StudentEditProfilePageState extends State<StudentEditProfilePage> {
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
-                          fontFamily: 'Poppins',
                           fontWeight: FontWeight.w400,
                           height: 0,
                         ),

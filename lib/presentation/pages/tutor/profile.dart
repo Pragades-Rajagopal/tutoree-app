@@ -247,8 +247,7 @@ class _TutorProfilePageState extends State<TutorProfilePage> {
                               textAlign: TextAlign.center,
                               style: const TextStyle(
                                 color: Colors.white,
-                                fontSize: 18,
-                                fontFamily: 'Poppins',
+                                fontSize: 16,
                                 fontWeight: FontWeight.w400,
                                 height: 0,
                               ),
@@ -375,8 +374,7 @@ class _TutorProfilePageState extends State<TutorProfilePage> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 20,
-                              fontFamily: 'Poppins',
+                              fontSize: 18,
                               fontWeight: FontWeight.w400,
                               height: 0,
                             ),

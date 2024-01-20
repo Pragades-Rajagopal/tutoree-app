@@ -140,6 +140,9 @@ class _AddFeedPageState extends State<AddFeedPage> {
                   },
                 ),
               ),
+              const SizedBox(
+                height: 14.0,
+              ),
               TextButton(
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.black87,
@@ -175,7 +178,6 @@ class _AddFeedPageState extends State<AddFeedPage> {
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 24,
-                          fontFamily: 'Poppins',
                           fontWeight: FontWeight.w400,
                           height: 0,
                         ),

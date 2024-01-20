@@ -107,14 +107,10 @@ class _LoginPageState extends State<LoginPage> {
                 'tutoree',
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 40,
-                  fontFamily: 'Poppins',
+                  fontSize: 30,
                   fontWeight: FontWeight.w400,
                   height: 0,
                 ),
-              ),
-              const SizedBox(
-                height: 10.0,
               ),
               const Text(
                 'where students meet the right teacher',
@@ -249,8 +245,7 @@ class _LoginPageState extends State<LoginPage> {
                         'login',
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 24,
-                          fontFamily: 'Poppins',
+                          fontSize: 22,
                           fontWeight: FontWeight.w400,
                           height: 0,
                         ),
@@ -271,8 +266,7 @@ class _LoginPageState extends State<LoginPage> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 21,
-                        fontFamily: 'Poppins',
+                        fontSize: 18,
                         fontWeight: FontWeight.w400,
                         height: 0,
                       ),
@@ -298,8 +292,7 @@ class _LoginPageState extends State<LoginPage> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 21,
-                        fontFamily: 'Poppins',
+                        fontSize: 18,
                         fontWeight: FontWeight.w400,
                         height: 0,
                       ),
