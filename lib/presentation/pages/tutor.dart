@@ -6,7 +6,11 @@ import 'package:tutoree_app/presentation/pages/tutor/home.dart';
 import 'package:tutoree_app/presentation/pages/tutor/profile.dart';
 
 class TutorPage extends StatefulWidget {
-  const TutorPage({super.key});
+  final int index;
+  const TutorPage({
+    super.key,
+    required this.index,
+  });
 
   @override
   State<TutorPage> createState() => _TutorPageState();
@@ -25,6 +29,9 @@ class _TutorPageState extends State<TutorPage> {
   void initState() {
     super.initState();
     getTokenData();
+    setState(() {
+      _currentIndex = widget.index;
+    });
   }
 
   void getTokenData() async {
@@ -87,6 +94,7 @@ class _TutorPageState extends State<TutorPage> {
 
   AppBar appBar() {
     return AppBar(
+      automaticallyImplyLeading: false,
       backgroundColor: Colors.white,
       elevation: 0.0,
       foregroundColor: Colors.black,

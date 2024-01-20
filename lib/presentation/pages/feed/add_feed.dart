@@ -72,7 +72,7 @@ class _AddFeedPageState extends State<AddFeedPage> {
       if (userType == 'student') {
         Get.offAndToNamed('studentHomeFeed');
       } else if (userType == 'tutor') {
-        Get.offAndToNamed('tutorHome');
+        Get.offAndToNamed('tutorHomeFeed');
       }
     }
   }

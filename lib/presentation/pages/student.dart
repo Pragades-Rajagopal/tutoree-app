@@ -94,6 +94,7 @@ class _StudentPageState extends State<StudentPage> {
 
   AppBar appBar() {
     return AppBar(
+      automaticallyImplyLeading: false,
       backgroundColor: Colors.white,
       elevation: 0.0,
       foregroundColor: Colors.black,

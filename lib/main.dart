@@ -35,12 +35,13 @@ class MyApp extends StatelessWidget {
       initialRoute: token == null ? "/" : "user",
       routes: {
         "user": (context) => userType == 'tutor'
-            ? const TutorPage()
+            ? const TutorPage(index: 0)
             : const StudentPage(index: 0),
         "/": (context) => const LoginPage(),
         "studentHomeFeed": (context) => const StudentPage(index: 1),
         "studentHomeProfile": (context) => const StudentPage(index: 2),
-        "tutorHome": (context) => const TutorPage(),
+        "tutorHomeFeed": (context) => const TutorPage(index: 1),
+        "tutorHomeProfile": (context) => const TutorPage(index: 2),
       },
     );
   }

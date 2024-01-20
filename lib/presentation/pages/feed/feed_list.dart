@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:tutoree_app/data/models/feeds_model.dart';
 import 'package:tutoree_app/presentation/pages/feed/add_feed.dart';
@@ -60,41 +61,47 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: _isApiLoading
-          ? const Center(
-              child: CircularProgressIndicator(
-                color: Colors.black,
-              ),
-            )
-          : SingleChildScrollView(
-              controller: _scrollController,
-              padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('global feeds...'),
-                    const SizedBox(
-                      height: 6.0,
-                    ),
-                    feedsWidget(feedList),
-                  ],
+    return WillPopScope(
+      onWillPop: () async {
+        SystemNavigator.pop();
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: _isApiLoading
+            ? const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.black,
+                ),
+              )
+            : SingleChildScrollView(
+                controller: _scrollController,
+                padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('global feeds...'),
+                      const SizedBox(
+                        height: 6.0,
+                      ),
+                      feedsWidget(feedList),
+                    ],
+                  ),
                 ),
               ),
-            ),
-      floatingActionButton: _addIconVisible
-          ? FloatingActionButton(
-              onPressed: () {
-                Get.to(() => const AddFeedPage());
-              },
-              backgroundColor: Colors.black87,
-              splashColor: Colors.grey,
-              tooltip: 'add feed',
-              child: const Icon(Icons.post_add_rounded),
-            )
-          : null,
+        floatingActionButton: _addIconVisible
+            ? FloatingActionButton(
+                onPressed: () {
+                  Get.to(() => const AddFeedPage());
+                },
+                backgroundColor: Colors.black87,
+                splashColor: Colors.grey,
+                tooltip: 'add feed',
+                child: const Icon(Icons.post_add_rounded),
+              )
+            : null,
+      ),
     );
   }
 

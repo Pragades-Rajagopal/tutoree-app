@@ -109,7 +109,7 @@ class _TutorEditProfilePageState extends State<TutorEditProfilePage> {
         alertDialog['commonSuccess']!,
         alertDialog['interestAdded']!,
       );
-      Get.offAndToNamed('tutorHome');
+      Get.offAndToNamed('tutorHomeProfile');
     }
   }
 
