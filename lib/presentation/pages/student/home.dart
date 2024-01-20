@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutoree_app/config/constants.dart';
 import 'package:tutoree_app/data/models/student_model.dart';
@@ -151,9 +152,11 @@ class _StudentHomePageState extends State<StudentHomePage> {
                   padding: const EdgeInsets.fromLTRB(0, 4, 0, 4),
                   child: Text(
                     lists[index]["tutorName"],
-                    style: const TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.black,
+                    style: GoogleFonts.poppins(
+                      textStyle: const TextStyle(
+                        fontSize: 16.0,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
                 ),
@@ -161,10 +164,12 @@ class _StudentHomePageState extends State<StudentHomePage> {
                   padding: const EdgeInsets.fromLTRB(0, 2, 0, 2),
                   child: Text(
                     '${lists[index]["bio"]}\n${lists[index]["websites"]}',
-                    style: const TextStyle(
-                      fontSize: 14.0,
-                      fontStyle: FontStyle.italic,
-                      color: Color(0xFF616161),
+                    style: GoogleFonts.poppins(
+                      textStyle: const TextStyle(
+                        fontSize: 12.0,
+                        fontStyle: FontStyle.italic,
+                        color: Color(0xFF616161),
+                      ),
                     ),
                   ),
                 ),
@@ -190,36 +195,47 @@ class _StudentHomePageState extends State<StudentHomePage> {
                     padding: const EdgeInsets.fromLTRB(0, 6, 20, 10),
                     child: Container(
                       alignment: Alignment.centerRight,
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _loadingIndicator = true;
-                            selectedItem = index;
-                          });
-                          sendTutorRequestDo(userId, lists[index]["tutorId"]);
-                        },
-                        child: _loadingIndicator && selectedItem == index
-                            ? const SizedBox(
-                                height: 21,
-                                width: 21,
-                                child: CircularProgressIndicator(
-                                  color: Colors.black,
-                                  strokeWidth: 2.0,
-                                  strokeCap: StrokeCap.square,
-                                ),
-                              )
-                            : const Text(
-                                'request',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 92, 80, 255),
-                                  fontSize: 18.0,
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.w400,
-                                  height: 0,
-                                ),
+                      child: lists[index]["tutorReqStatus"] == 1
+                          ? const Text(
+                              'requested',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Color.fromRGBO(189, 189, 189, 1),
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w400,
+                                height: 0,
                               ),
-                      ),
+                            )
+                          : GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _loadingIndicator = true;
+                                  selectedItem = index;
+                                });
+                                sendTutorRequestDo(
+                                    userId, lists[index]["tutorId"]);
+                              },
+                              child: _loadingIndicator && selectedItem == index
+                                  ? const SizedBox(
+                                      height: 21,
+                                      width: 21,
+                                      child: CircularProgressIndicator(
+                                        color: Colors.black,
+                                        strokeWidth: 2.0,
+                                        strokeCap: StrokeCap.square,
+                                      ),
+                                    )
+                                  : const Text(
+                                      'request',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Color.fromARGB(255, 92, 80, 255),
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.w400,
+                                        height: 0,
+                                      ),
+                                    ),
+                            ),
                     ),
                   ),
                 ],

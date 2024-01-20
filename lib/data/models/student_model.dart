@@ -12,6 +12,7 @@ class TutorList {
         "websites": json[i]["websites"],
         "courses": json[i]["courses"],
         "studentId": json[i]["student_id"],
+        "tutorReqStatus": json[i]["tutor_req_status"],
       });
     }
   }
