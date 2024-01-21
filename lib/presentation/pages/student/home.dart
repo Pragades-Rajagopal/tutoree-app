@@ -84,27 +84,33 @@ class _StudentHomePageState extends State<StudentHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: _isApiLoading
-          ? const Center(
-              child: CircularProgressIndicator(
-                color: Colors.black,
-              ),
-            )
-          : SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('(${lists.length}) tutors based on your interests...'),
-                    const SizedBox(
-                      height: 6.0,
-                    ),
-                    tutorListView(lists),
-                  ],
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await getTutorListDo(userId);
+        },
+        child: _isApiLoading
+            ? const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.black,
+                ),
+              )
+            : SingleChildScrollView(
+                padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                          '(${lists.length}) tutors based on your interests...'),
+                      const SizedBox(
+                        height: 6.0,
+                      ),
+                      tutorListView(lists),
+                    ],
+                  ),
                 ),
               ),
-            ),
+      ),
     );
   }
 
@@ -160,19 +166,22 @@ class _StudentHomePageState extends State<StudentHomePage> {
                     ),
                   ),
                 ),
-                subtitle: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 2, 0, 2),
-                  child: Text(
-                    '${lists[index]["bio"]}\n${lists[index]["websites"]}',
-                    style: GoogleFonts.poppins(
-                      textStyle: const TextStyle(
-                        fontSize: 12.0,
-                        fontStyle: FontStyle.italic,
-                        color: Color(0xFF616161),
-                      ),
-                    ),
-                  ),
-                ),
+                subtitle:
+                    lists[index]["bio"] != "" || lists[index]["websites"] != ""
+                        ? Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 2, 0, 2),
+                            child: Text(
+                              '${lists[index]["bio"]}\n${lists[index]["websites"]}',
+                              style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
+                                  fontSize: 12.0,
+                                  fontStyle: FontStyle.italic,
+                                  color: Color(0xFF616161),
+                                ),
+                              ),
+                            ),
+                          )
+                        : null,
                 children: <Widget>[
                   const Divider(
                     thickness: 1.0,

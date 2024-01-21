@@ -54,6 +54,7 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
   Future<void> getFeedsDo() async {
     feedsListRes = await apiService.getGlobalFeeds();
     setState(() {
+      feedList.clear();
       feedList.addAll(feedsListRes!.data);
       _isApiLoading = false;
     });
@@ -68,28 +69,34 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
       },
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: _isApiLoading
-            ? const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.black,
-                ),
-              )
-            : SingleChildScrollView(
-                controller: _scrollController,
-                padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text('global feeds...'),
-                      const SizedBox(
-                        height: 6.0,
-                      ),
-                      feedsWidget(feedList),
-                    ],
+        body: RefreshIndicator(
+          onRefresh: () async {
+            await getFeedsDo();
+          },
+          color: Colors.black,
+          child: _isApiLoading
+              ? const Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.black,
+                  ),
+                )
+              : SingleChildScrollView(
+                  controller: _scrollController,
+                  padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('global feeds...'),
+                        const SizedBox(
+                          height: 6.0,
+                        ),
+                        feedsWidget(feedList),
+                      ],
+                    ),
                   ),
                 ),
-              ),
+        ),
         floatingActionButton: _addIconVisible
             ? FloatingActionButton(
                 onPressed: () {

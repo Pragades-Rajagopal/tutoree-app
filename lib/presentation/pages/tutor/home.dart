@@ -48,27 +48,31 @@ class _TutorHomePageState extends State<TutorHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: _isApiLoading
-          ? const Center(
-              child: CircularProgressIndicator(
-                color: Colors.black,
-              ),
-            )
-          : SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('(${lists.length}) student requests...'),
-                    const SizedBox(
-                      height: 6.0,
+      body: RefreshIndicator(
+          onRefresh: () async {
+            await getStudentListForTutorDo(userId);
+          },
+          child: _isApiLoading
+              ? const Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.black,
+                  ),
+                )
+              : SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('(${lists.length}) student requests...'),
+                        const SizedBox(
+                          height: 6.0,
+                        ),
+                        studentRequestListView(lists),
+                      ],
                     ),
-                    studentRequestListView(lists),
-                  ],
-                ),
-              ),
-            ),
+                  ),
+                )),
     );
   }
 
