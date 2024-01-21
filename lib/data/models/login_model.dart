@@ -52,3 +52,26 @@ class ResetPasswordResponse {
     message = json["message"];
   }
 }
+
+class Logout {
+  String? email;
+
+  Logout({
+    this.email,
+  });
+}
+
+class LogoutResponse {
+  int? statusCode;
+  String? message;
+
+  LogoutResponse({
+    this.statusCode,
+    this.message,
+  });
+
+  LogoutResponse.fromJson(Map<String, dynamic> response) {
+    statusCode = response["statusCode"];
+    message = response["message"];
+  }
+}

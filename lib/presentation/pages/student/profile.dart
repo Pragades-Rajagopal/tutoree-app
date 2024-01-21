@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutoree_app/config/constants.dart';
 import 'package:tutoree_app/data/models/feeds_model.dart';
+import 'package:tutoree_app/data/models/login_model.dart';
 import 'package:tutoree_app/data/models/student_model.dart';
+import 'package:tutoree_app/data/services/login_api_service.dart';
 import 'package:tutoree_app/presentation/pages/login.dart';
 import 'package:tutoree_app/presentation/pages/student/edit_profile.dart';
 import 'package:tutoree_app/data/services/feed_api_service.dart';
@@ -20,10 +22,13 @@ class StudentProfilePage extends StatefulWidget {
 
 class _StudentProfilePageState extends State<StudentProfilePage> {
   int _userId = 0;
+  String _userEmail = '';
   StudentApi apiService = StudentApi();
   FeedsApi feedsApiService = FeedsApi();
+  LoginApi loginApiService = LoginApi();
   StudentProfile? studentProfile;
   DeleteFeedResponse? deleteFeedRes;
+  LogoutResponse? logoutResponse;
   List interests = [];
   List<int> interestIds = [0];
   List feeds = [];
@@ -40,6 +45,7 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       _userId = int.parse(prefs.getString("user_id").toString());
+      _userEmail = prefs.getString("user_email")!;
     });
     getStudentProfileDo(_userId);
   }
@@ -80,10 +86,18 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
     }
   }
 
-  Future<void> logoutDo() async {
+  Future<void> logoutDo(String email) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove("token");
-    Get.offAll(() => const LoginPage());
+    logoutResponse = await loginApiService.logout({"email": email});
+    if (logoutResponse!.statusCode == 200) {
+      prefs.remove("token");
+      Get.offAll(() => const LoginPage());
+    } else {
+      errorSnackBar(
+        alertDialog['oops']!,
+        alertDialog['commonError']!,
+      );
+    }
   }
 
   @override
@@ -315,7 +329,7 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          logoutDo();
+                          logoutDo(_userEmail);
                         },
                         child: const Padding(
                           padding: EdgeInsets.fromLTRB(4, 0, 0, 0),

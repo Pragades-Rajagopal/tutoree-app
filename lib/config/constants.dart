@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 Map<String, String> endpoints = {
   "login": "/api/login",
+  "logout": "/api/logout",
   "user": "/api/users",
   "otp": "/api/validate-otp",
   "resendOtp": "/api/resend-otp",
