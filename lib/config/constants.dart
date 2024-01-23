@@ -16,6 +16,7 @@ Map<String, String> endpoints = {
   "course": "/api/courses",
   "addStudentInterest": "/api/student/interest",
   "addTutorProfile": "/api/tutor/profile",
+  "deactivate": "/api/deactivate",
 };
 
 Map<String, String> apiHeader = {
@@ -52,6 +53,7 @@ Map<String, String> alertDialog = {
   'interestAdded': 'Interests added',
   'deleteFeed': 'feed deleted successfully',
   'deleteFeedError': 'Error while deleting feed',
+  'deactivationSuccess': 'Account deactivated',
 };
 
 Map<String, String> responseErrors = {

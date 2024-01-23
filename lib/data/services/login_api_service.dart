@@ -39,3 +39,16 @@ class LoginApi {
     return result;
   }
 }
+
+class DeactivationApi {
+  Future<DeactivationResponse> deactivate(Map<String, dynamic> data) async {
+    final env = await accessENV(assetsFileName: '.env');
+    var response = await http.post(
+        Uri.parse('${env["URL"]}${endpoints["deactivate"]}'),
+        body: json.encode(data),
+        headers: apiHeader);
+    var body = jsonDecode(response.body);
+    DeactivationResponse result = DeactivationResponse.fromJson(body);
+    return result;
+  }
+}

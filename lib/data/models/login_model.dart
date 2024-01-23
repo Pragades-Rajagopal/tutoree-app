@@ -75,3 +75,28 @@ class LogoutResponse {
     message = response["message"];
   }
 }
+
+class DeactivationRequest {
+  String? email;
+  String? deviceType;
+
+  DeactivationRequest({
+    this.email,
+    this.deviceType,
+  });
+}
+
+class DeactivationResponse {
+  int? statusCode;
+  String? message;
+
+  DeactivationResponse({
+    this.statusCode,
+    this.message,
+  });
+
+  DeactivationResponse.fromJson(Map<String, dynamic> response) {
+    statusCode = response["statusCode"];
+    message = response["message"];
+  }
+}
