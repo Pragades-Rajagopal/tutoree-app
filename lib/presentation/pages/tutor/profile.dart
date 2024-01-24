@@ -26,14 +26,17 @@ class _TutorProfilePageState extends State<TutorProfilePage> {
   TutorApi apiService = TutorApi();
   FeedsApi feedsApiService = FeedsApi();
   LoginApi loginApiService = LoginApi();
+  DeactivationApi deactivationApiService = DeactivationApi();
   TutorProfile? tutorProfile;
   DeleteFeedResponse? deleteFeedRes;
   LogoutResponse? logoutResponse;
+  DeactivationResponse? deactivationRes;
   List interests = [];
   List<int> interestIds = [0];
   List feeds = [];
   String _interestsHeader = 'no interests! try adding some courses';
   bool _isApiLoading = true;
+  final String _deviceType = 'app';
 
   @override
   void initState() {
@@ -91,6 +94,27 @@ class _TutorProfilePageState extends State<TutorProfilePage> {
     logoutResponse = await loginApiService.logout({"email": email});
     if (logoutResponse!.statusCode == 200) {
       prefs.remove("token");
+      Get.offAll(() => const LoginPage());
+    } else {
+      errorSnackBar(
+        alertDialog['oops']!,
+        alertDialog['commonError']!,
+      );
+    }
+  }
+
+  Future<void> deactivateDo(String email, String deviceType) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    deactivationRes = await deactivationApiService.deactivate({
+      "email": email,
+      "deviceType": deviceType,
+    });
+    if (deactivationRes!.statusCode == 200) {
+      prefs.remove("token");
+      successSnackBar(
+        alertDialog['commonSuccess']!,
+        alertDialog['deactivationSuccess']!,
+      );
       Get.offAll(() => const LoginPage());
     } else {
       errorSnackBar(
@@ -392,6 +416,37 @@ class _TutorProfilePageState extends State<TutorProfilePage> {
                               fontWeight: FontWeight.w400,
                               height: 0,
                             ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 14.0,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          deactivateDo(_userEmail, _deviceType);
+                        },
+                        child: const Padding(
+                          padding: EdgeInsets.fromLTRB(4, 0, 0, 0),
+                          child: Text(
+                            'deactivate',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
+                              height: 0,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(4, 2, 0, 0),
+                        child: Text(
+                          '*this will delete your interests, feeds, user data from the system. you can create an account anytime',
+                          style: TextStyle(
+                            fontSize: 12.0,
+                            color: Colors.grey,
                           ),
                         ),
                       ),
