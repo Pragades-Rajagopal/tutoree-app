@@ -167,12 +167,22 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        lists[index]["createdBy"],
-                        style: const TextStyle(
-                          fontSize: 12.0,
-                          color: Color(0xFF757575),
+                      GestureDetector(
+                        child: Text(
+                          '${lists[index]["createdBy"]} •',
+                          style: const TextStyle(
+                            fontSize: 12.0,
+                            color: Colors.black,
+                          ),
                         ),
+                        onTap: () {
+                          bottomSheet(
+                            context,
+                            {
+                              "name": lists[index]["createdBy"],
+                            },
+                          );
+                        },
                       ),
                       Text(
                         lists[index]["date"],
@@ -190,5 +200,33 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
         },
       );
     }
+  }
+
+  Future<dynamic> bottomSheet(BuildContext context, Map<String, dynamic> data) {
+    return showModalBottomSheet(
+      context: context,
+      elevation: 100,
+      builder: ((context) {
+        return SingleChildScrollView(
+          child: Center(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
+                  child: Text(
+                    data["name"],
+                    style: const TextStyle(
+                      fontSize: 20.0,
+                      color: Color(0xFF757575),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      }),
+    );
   }
 }
