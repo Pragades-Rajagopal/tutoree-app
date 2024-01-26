@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutoree_app/data/models/feeds_model.dart';
 import 'package:tutoree_app/presentation/pages/feed/add_feed.dart';
 import 'package:tutoree_app/data/services/feed_api_service.dart';
@@ -17,15 +18,25 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
   ScrollController _scrollController = ScrollController();
   bool _addIconVisible = true;
   FeedsListResponse? feedsListRes;
+  FeedUserData? feedUserDataRes;
   FeedsApi apiService = FeedsApi();
   List<Map<String, dynamic>> feedList = [];
   bool _isApiLoading = true;
+  int _userId = 0;
 
   @override
   void initState() {
     super.initState();
+    getTokenData();
     getFeedsDo();
     hideAddButton();
+  }
+
+  void getTokenData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _userId = int.parse(prefs.getString("user_id").toString());
+    });
   }
 
   ///Hides add (floating action button) upon scrolling
@@ -58,6 +69,14 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
       feedList.addAll(feedsListRes!.data);
       _isApiLoading = false;
     });
+  }
+
+  Future<void> getFeedUserDataDo(int userId) async {
+    feedUserDataRes = await apiService.getFeedUserData(userId);
+    if (feedUserDataRes!.email != null) {
+      if (!mounted) return;
+      bottomSheet(context);
+    }
   }
 
   @override
@@ -167,23 +186,27 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      GestureDetector(
-                        child: Text(
-                          '${lists[index]["createdBy"]} •',
-                          style: const TextStyle(
-                            fontSize: 12.0,
-                            color: Colors.black,
-                          ),
-                        ),
-                        onTap: () {
-                          bottomSheet(
-                            context,
-                            {
-                              "name": lists[index]["createdBy"],
-                            },
-                          );
-                        },
-                      ),
+                      lists[index]["createdById"] == _userId
+                          ? const Text(
+                              'you',
+                              style: TextStyle(
+                                fontSize: 12.0,
+                                color: Color(0xFF757575),
+                              ),
+                            )
+                          : GestureDetector(
+                              child: Text(
+                                '${lists[index]["createdBy"]} •',
+                                style: const TextStyle(
+                                  fontSize: 12.0,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              onTap: () async {
+                                await getFeedUserDataDo(
+                                    lists[index]["createdById"]);
+                              },
+                            ),
                       Text(
                         lists[index]["date"],
                         style: const TextStyle(
@@ -202,27 +225,95 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
     }
   }
 
-  Future<dynamic> bottomSheet(BuildContext context, Map<String, dynamic> data) {
+  Future<dynamic> bottomSheet(BuildContext context) {
     return showModalBottomSheet(
       context: context,
       elevation: 100,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
       builder: ((context) {
         return SingleChildScrollView(
           child: Center(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-                  child: Text(
-                    data["name"],
-                    style: const TextStyle(
-                      fontSize: 20.0,
-                      color: Color(0xFF757575),
-                      fontWeight: FontWeight.bold,
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(14, 0, 14, 20),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
+                    child: Text(
+                      '${feedUserDataRes?.name}',
+                      style: const TextStyle(
+                        fontSize: 20.0,
+                        color: Color(0xFF484848),
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                    child: Text(
+                      '${feedUserDataRes?.email}',
+                      style: const TextStyle(
+                        fontSize: 18.0,
+                        color: Color(0xFF484848),
+                      ),
+                    ),
+                  ),
+                  feedUserDataRes?.websites != null
+                      ? Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          child: Text(
+                            '${feedUserDataRes?.websites}',
+                            style: const TextStyle(
+                              fontSize: 14.0,
+                              color: Color(0xFF484848),
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        )
+                      : const SizedBox(
+                          height: 0,
+                          width: 0,
+                        ),
+                  feedUserDataRes?.bio != null
+                      ? Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          child: Text(
+                            '${feedUserDataRes?.bio}',
+                            style: const TextStyle(
+                              fontSize: 12.0,
+                              color: Color(0xFF757575),
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        )
+                      : const SizedBox(
+                          height: 0,
+                          width: 0,
+                        ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 4, 0, 20),
+                    child: Text(
+                      '${feedUserDataRes?.interests}',
+                      style: const TextStyle(
+                        fontSize: 16.0,
+                        color: Color(0xFF484848),
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  GestureDetector(
+                    child: const Icon(Icons.close),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         );

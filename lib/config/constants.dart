@@ -12,6 +12,7 @@ Map<String, String> endpoints = {
   "studentProfile": "/api/student/interest",
   "feed": "/api/feed",
   "tutorProfile": "/api/tutor/profile",
+  "feeduserData": "/api/feed-user",
   "studentListForTutor": "/api/tutor/request",
   "course": "/api/courses",
   "addStudentInterest": "/api/student/interest",

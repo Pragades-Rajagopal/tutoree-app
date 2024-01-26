@@ -36,4 +36,14 @@ class FeedsApi {
     DeleteFeedResponse result = DeleteFeedResponse.fromJson(body);
     return result;
   }
+
+  Future<FeedUserData> getFeedUserData(int userId) async {
+    final env = await accessENV(assetsFileName: '.env');
+    var response = await http
+        .get(Uri.parse('${env["URL"]}${endpoints["feeduserData"]}/$userId'));
+    var body = jsonDecode(response.body);
+    var data = body["data"];
+    FeedUserData result = FeedUserData.fromJson(data);
+    return result;
+  }
 }
