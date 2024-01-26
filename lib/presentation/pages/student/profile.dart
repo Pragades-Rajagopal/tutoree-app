@@ -373,7 +373,7 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                         height: 14.0,
                       ),
                       GestureDetector(
-                        onTap: () {
+                        onDoubleTap: () {
                           deactivateDo(_userEmail, _deviceType);
                         },
                         child: const Padding(
@@ -393,7 +393,18 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                       const Padding(
                         padding: EdgeInsets.fromLTRB(4, 2, 0, 0),
                         child: Text(
-                          '*this will delete your interests, feeds, user data from the system. you can create an account anytime',
+                          '!this will delete your interests, feeds, user data from the system. you can create an account anytime',
+                          style: TextStyle(
+                            fontSize: 12.0,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(4, 1, 0, 0),
+                        child: Text(
+                          '*double tab to deactivate',
                           style: TextStyle(
                             fontSize: 12.0,
                             color: Colors.grey,
