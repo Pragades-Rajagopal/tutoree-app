@@ -45,6 +45,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
   Future<void> getTutorListDo(int studentId) async {
     TutorList tutorList = await apiService.getTutorlist(studentId);
     setState(() {
+      lists.clear();
       lists.addAll(tutorList.data);
       _isApiLoading = false;
     });
@@ -88,6 +89,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
         onRefresh: () async {
           await getTutorListDo(userId);
         },
+        color: Colors.black,
         child: _isApiLoading
             ? const Center(
                 child: CircularProgressIndicator(
@@ -95,6 +97,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
                 ),
               )
             : SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
                 padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
                 child: Center(
                   child: Column(

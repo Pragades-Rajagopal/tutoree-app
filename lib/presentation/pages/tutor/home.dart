@@ -15,7 +15,6 @@ class _TutorHomePageState extends State<TutorHomePage> {
   int userId = 0;
   TutorApi apiService = TutorApi();
   List<Map<String, dynamic>> lists = [];
-  int selectedItem = -1;
   bool _isApiLoading = true;
 
   @override
@@ -39,6 +38,7 @@ class _TutorHomePageState extends State<TutorHomePage> {
   Future<void> getStudentListForTutorDo(int tutorId) async {
     StudentList studentList = await apiService.getStudentListForTutor(tutorId);
     setState(() {
+      lists.clear();
       lists.addAll(studentList.data);
       _isApiLoading = false;
     });
@@ -52,6 +52,7 @@ class _TutorHomePageState extends State<TutorHomePage> {
           onRefresh: () async {
             await getStudentListForTutorDo(userId);
           },
+          color: Colors.black,
           child: _isApiLoading
               ? const Center(
                   child: CircularProgressIndicator(
@@ -59,6 +60,7 @@ class _TutorHomePageState extends State<TutorHomePage> {
                   ),
                 )
               : SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
                   padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
                   child: Center(
                     child: Column(
@@ -117,7 +119,7 @@ class _TutorHomePageState extends State<TutorHomePage> {
                 iconColor: Colors.grey,
                 backgroundColor: Colors.grey.shade50,
                 title: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 4, 0, 4),
+                  padding: const EdgeInsets.fromLTRB(0, 4, 0, 0),
                   child: Text(
                     lists[index]["studentName"],
                     style: GoogleFonts.poppins(
@@ -129,7 +131,7 @@ class _TutorHomePageState extends State<TutorHomePage> {
                   ),
                 ),
                 subtitle: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 2, 0, 2),
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 4),
                   child: Text(
                     '${lists[index]["email"]}\n${lists[index]["mobile_no"]}',
                     style: GoogleFonts.poppins(

@@ -140,6 +140,7 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                 ),
               )
             : SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
                 padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
                 child: Center(
                   child: Column(

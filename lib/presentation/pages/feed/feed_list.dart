@@ -32,6 +32,12 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
     hideAddButton();
   }
 
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   void getTokenData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -100,6 +106,7 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
                   ),
                 )
               : SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
                   controller: _scrollController,
                   padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
                   child: Center(
@@ -124,7 +131,7 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
                 backgroundColor: Colors.black87,
                 splashColor: Colors.grey,
                 tooltip: 'add feed',
-                child: const Icon(Icons.post_add_rounded),
+                child: const Icon(Icons.add),
               )
             : null,
       ),

@@ -78,11 +78,11 @@ class _StudentPageState extends State<StudentPage> {
                 text: 'home',
               ),
               GButton(
-                icon: Icons.newspaper_sharp,
+                icon: Icons.feed,
                 text: 'feeds',
               ),
               GButton(
-                icon: Icons.account_circle_rounded,
+                icon: Icons.account_box_rounded,
                 text: 'profile',
               ),
             ],
