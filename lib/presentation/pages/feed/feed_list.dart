@@ -15,7 +15,7 @@ class CommonFeedsPage extends StatefulWidget {
 }
 
 class _CommonFeedsPageState extends State<CommonFeedsPage> {
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   bool _addIconVisible = true;
   FeedsListResponse? feedsListRes;
   FeedUserData? feedUserDataRes;
@@ -23,13 +23,18 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
   List<Map<String, dynamic>> feedList = [];
   bool _isApiLoading = true;
   int _userId = 0;
+  // feed pagination
+  final int _limit = 15;
+  int _offset = 0;
+  bool _hasFeedData = true;
 
   @override
   void initState() {
     super.initState();
     getTokenData();
-    getFeedsDo();
+    getFeedsDo(_limit, _offset);
     hideAddButton();
+    pagination();
   }
 
   @override
@@ -47,7 +52,6 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
 
   ///Hides add (floating action button) upon scrolling
   void hideAddButton() {
-    _scrollController = ScrollController();
     _scrollController.addListener(() {
       if (_scrollController.position.userScrollDirection ==
           ScrollDirection.reverse) {
@@ -68,12 +72,28 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
     });
   }
 
-  Future<void> getFeedsDo() async {
-    feedsListRes = await apiService.getGlobalFeeds();
+  /// Pagination of feeds
+  void pagination() {
+    _scrollController.addListener(() {
+      if (_scrollController.position.maxScrollExtent ==
+          _scrollController.position.pixels) {
+        getFeedsDo(_limit, _offset);
+      }
+    });
+  }
+
+  Future<void> getFeedsDo(int limit, int offset) async {
+    print(_offset);
+    feedsListRes = await apiService.getGlobalFeeds(limit, offset);
+    int localOffset = _offset + 15;
     setState(() {
-      feedList.clear();
+      // feedList.clear();
       feedList.addAll(feedsListRes!.data);
       _isApiLoading = false;
+      _offset = localOffset;
+      if (feedsListRes!.data.length < _limit) {
+        _hasFeedData = false;
+      }
     });
   }
 
@@ -96,7 +116,11 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
         backgroundColor: Colors.white,
         body: RefreshIndicator(
           onRefresh: () async {
-            await getFeedsDo();
+            setState(() {
+              feedList.clear();
+              _offset = 0;
+            });
+            await getFeedsDo(_limit, _offset);
           },
           color: Colors.black,
           child: _isApiLoading
@@ -118,6 +142,9 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
                           height: 6.0,
                         ),
                         feedsWidget(feedList),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
                       ],
                     ),
                   ),
@@ -155,78 +182,98 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
       return ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: lists.length,
+        itemCount: lists.length + 1,
         itemBuilder: (context, index) {
-          return Card(
-            margin: const EdgeInsets.symmetric(
-              horizontal: 2.0,
-              vertical: 5.0,
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-              side: BorderSide(
-                color: Colors.grey.shade300,
-                width: 1.5,
+          if (index < lists.length) {
+            return Card(
+              margin: const EdgeInsets.symmetric(
+                horizontal: 2.0,
+                vertical: 5.0,
               ),
-            ),
-            shadowColor: Colors.transparent,
-            child: Container(
-              padding: const EdgeInsets.fromLTRB(14, 8, 14, 8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                    child: Text(
-                      lists[index]["content"],
-                      style: const TextStyle(
-                        fontSize: 14.0,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    color: Colors.grey.shade100,
-                    height: 2,
-                    width: 350,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      lists[index]["createdById"] == _userId
-                          ? const Text(
-                              'you',
-                              style: TextStyle(
-                                fontSize: 12.0,
-                                color: Color(0xFF757575),
-                              ),
-                            )
-                          : GestureDetector(
-                              child: Text(
-                                '${lists[index]["createdBy"]} •',
-                                style: const TextStyle(
-                                  fontSize: 12.0,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              onTap: () async {
-                                await getFeedUserDataDo(
-                                    lists[index]["createdById"]);
-                              },
-                            ),
-                      Text(
-                        lists[index]["date"],
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                side: BorderSide(
+                  color: Colors.grey.shade300,
+                  width: 1.5,
+                ),
+              ),
+              shadowColor: Colors.transparent,
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(14, 8, 14, 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                      child: Text(
+                        lists[index]["content"],
                         style: const TextStyle(
-                          fontSize: 12.0,
-                          color: Color(0xFF757575),
+                          fontSize: 14.0,
+                          color: Colors.black,
                         ),
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+                    Container(
+                      color: Colors.grey.shade100,
+                      height: 2,
+                      width: 350,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        lists[index]["createdById"] == _userId
+                            ? const Text(
+                                'you',
+                                style: TextStyle(
+                                  fontSize: 12.0,
+                                  color: Color(0xFF757575),
+                                ),
+                              )
+                            : GestureDetector(
+                                child: Text(
+                                  '${lists[index]["createdBy"]} •',
+                                  style: const TextStyle(
+                                    fontSize: 12.0,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                onTap: () async {
+                                  await getFeedUserDataDo(
+                                      lists[index]["createdById"]);
+                                },
+                              ),
+                        Text(
+                          lists[index]["date"],
+                          style: const TextStyle(
+                            fontSize: 12.0,
+                            color: Color(0xFF757575),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
+            );
+          } else {
+            return Center(
+              child: _hasFeedData
+                  ? const Text(
+                      'crunching the data...',
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: Colors.grey,
+                      ),
+                    )
+                  : const Text(
+                      'no more feeds!',
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: Colors.grey,
+                      ),
+                    ),
+            );
+          }
         },
       );
     }
