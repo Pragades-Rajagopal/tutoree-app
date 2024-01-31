@@ -237,6 +237,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.8.1"
+  linkfy_text:
+    dependency: "direct main"
+    description:
+      name: linkfy_text
+      sha256: "57286565bfbc7d023a9ab782531c8a61dd02bfb982aee7747260f0ebe47b103a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.5"
   lints:
     dependency: transitive
     description:

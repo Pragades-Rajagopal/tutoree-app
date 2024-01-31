@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:linkfy_text/linkfy_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutoree_app/data/models/feeds_model.dart';
 import 'package:tutoree_app/presentation/pages/feed/add_feed.dart';
 import 'package:tutoree_app/data/services/feed_api_service.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CommonFeedsPage extends StatefulWidget {
   const CommonFeedsPage({super.key});
@@ -170,7 +172,7 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
       return Container(
         alignment: Alignment.center,
         child: const Text(
-          'oops! unable to fetch\nglobal feeds at the moment',
+          'no feeds at the moment',
           style: TextStyle(
             fontSize: 12.0,
             color: Colors.grey,
@@ -205,12 +207,31 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                      child: Text(
+                      child: LinkifyText(
                         lists[index]["content"],
-                        style: const TextStyle(
+                        linkStyle: const TextStyle(
+                          color: Color(0xFF616161),
+                          fontSize: 14,
+                        ),
+                        textStyle: const TextStyle(
                           fontSize: 14.0,
                           color: Colors.black,
                         ),
+                        linkTypes: const [LinkType.url, LinkType.email],
+                        onTap: (link) async {
+                          if (link.type == LinkType.url) {
+                            await launchUrl(Uri.parse('${link.value}'));
+                          } else if (link.type == LinkType.email) {
+                            final Uri params = Uri(
+                              scheme: 'mailto',
+                              path: '${link.value}',
+                            );
+                            String url = params.toString();
+                            if (await canLaunchUrl(Uri.parse(url))) {
+                              await launchUrl(Uri.parse(url));
+                            }
+                          }
+                        },
                       ),
                     ),
                     Container(

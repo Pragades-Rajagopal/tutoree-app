@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:linkfy_text/linkfy_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutoree_app/config/constants.dart';
 import 'package:tutoree_app/data/models/feeds_model.dart';
@@ -12,6 +13,7 @@ import 'package:tutoree_app/presentation/pages/student/edit_profile.dart';
 import 'package:tutoree_app/data/services/feed_api_service.dart';
 import 'package:tutoree_app/data/services/student_api_service.dart';
 import 'package:tutoree_app/presentation/utils/common_utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class StudentProfilePage extends StatefulWidget {
   const StudentProfilePage({super.key});
@@ -292,13 +294,23 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                                         child: Padding(
                                           padding: const EdgeInsets.fromLTRB(
                                               0, 0, 0, 10),
-                                          child: Text(
+                                          child: LinkifyText(
                                             feeds[index]["content"],
-                                            style: const TextStyle(
+                                            linkStyle: const TextStyle(
+                                              color: Color(0xFF616161),
+                                              fontSize: 14,
+                                            ),
+                                            textStyle: const TextStyle(
                                               fontSize: 14.0,
                                               color: Colors.black,
                                             ),
-                                            // overflow: TextOverflow.ellipsis,
+                                            linkTypes: const [LinkType.url],
+                                            onTap: (link) async {
+                                              if (link.type == LinkType.url) {
+                                                await launchUrl(
+                                                    Uri.parse('${link.value}'));
+                                              }
+                                            },
                                           ),
                                         ),
                                       ),
