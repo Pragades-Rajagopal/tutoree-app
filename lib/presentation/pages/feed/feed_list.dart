@@ -24,7 +24,7 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
   bool _isApiLoading = true;
   int _userId = 0;
   // feed pagination
-  final int _limit = 15;
+  final int _limit = 25;
   int _offset = 0;
   bool _hasFeedData = true;
 
@@ -83,9 +83,8 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
   }
 
   Future<void> getFeedsDo(int limit, int offset) async {
-    print(_offset);
     feedsListRes = await apiService.getGlobalFeeds(limit, offset);
-    int localOffset = _offset + 15;
+    int localOffset = _offset + 25;
     setState(() {
       // feedList.clear();
       feedList.addAll(feedsListRes!.data);
@@ -117,6 +116,7 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
         body: RefreshIndicator(
           onRefresh: () async {
             setState(() {
+              _isApiLoading = true;
               feedList.clear();
               _offset = 0;
             });
@@ -261,14 +261,14 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
                   ? const Text(
                       'crunching the data...',
                       style: TextStyle(
-                        fontSize: 10,
+                        fontSize: 12,
                         color: Colors.grey,
                       ),
                     )
                   : const Text(
                       'no more feeds!',
                       style: TextStyle(
-                        fontSize: 10,
+                        fontSize: 12,
                         color: Colors.grey,
                       ),
                     ),
