@@ -7,9 +7,10 @@ import 'package:tutoree_app/data/models/common_model.dart';
 class CourseApi {
   Future<List<Course>> getCourseList() async {
     final env = await accessENV(assetsFileName: '.env');
-    var response = await http.get(Uri.parse(
-        '${env["URL"]}${endpoints["course"]}?limit=100&totalCount=false'));
-    List<dynamic> data = jsonDecode(response.body);
+    var response =
+        await http.get(Uri.parse('${env["URL"]}${endpoints["course"]}'));
+    var body = jsonDecode(response.body);
+    List<dynamic> data = body["data"];
     var result = data.map((json) => Course.fromJson(json)).toList();
     return result;
   }

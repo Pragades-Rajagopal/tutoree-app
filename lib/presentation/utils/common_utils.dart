@@ -53,3 +53,26 @@ loadingIndicator() {
     ],
   );
 }
+
+var enabledBorder_ = OutlineInputBorder(
+  borderRadius: BorderRadius.circular(30.0),
+  borderSide: const BorderSide(
+    color: Colors.black,
+    width: 2.0,
+  ),
+);
+var focusedBorder_ = OutlineInputBorder(
+  borderRadius: BorderRadius.circular(30.0),
+  borderSide: const BorderSide(
+    color: Colors.black,
+    width: 2.0,
+  ),
+);
+
+var errorBorder_ = OutlineInputBorder(
+  borderRadius: BorderRadius.circular(30.0),
+  borderSide: const BorderSide(
+    color: Color(0xFFFF0000),
+    width: 2.0,
+  ),
+);

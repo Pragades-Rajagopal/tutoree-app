@@ -96,6 +96,7 @@ class _StudentEditProfilePageState extends State<StudentEditProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.fromLTRB(10, 90, 10, 40),
         child: Center(
           child: Column(
@@ -175,7 +176,21 @@ class _StudentEditProfilePageState extends State<StudentEditProfilePage> {
                           height: 0,
                         ),
                       ),
-              )
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                'courses you are looking for are unavailable?\nmail to ${commonConfig["support_email"]}\nand we will verify and add them',
+                style: const TextStyle(
+                  color: Colors.grey,
+                  fontSize: 12,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
             ],
           ),
         ),

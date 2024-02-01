@@ -117,6 +117,7 @@ class _TutorEditProfilePageState extends State<TutorEditProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.fromLTRB(10, 90, 10, 40),
         child: Center(
           child: Column(
@@ -176,7 +177,8 @@ class _TutorEditProfilePageState extends State<TutorEditProfilePage> {
                 height: 20,
               ),
               Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                // crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _mailSubscriptionSelector(0,
                       text: "don't send mail", icon: Icons.cancel),
@@ -185,6 +187,7 @@ class _TutorEditProfilePageState extends State<TutorEditProfilePage> {
                 ],
               ),
               const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
                     padding: EdgeInsets.fromLTRB(12, 0, 0, 16),
@@ -284,7 +287,21 @@ class _TutorEditProfilePageState extends State<TutorEditProfilePage> {
                           height: 0,
                         ),
                       ),
-              )
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                'courses you are looking for are unavailable?\nmail to ${commonConfig["support_email"]}\nand we will verify and add them',
+                style: const TextStyle(
+                  color: Colors.grey,
+                  fontSize: 12,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
             ],
           ),
         ),

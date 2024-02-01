@@ -14,7 +14,7 @@ Map<String, String> endpoints = {
   "tutorProfile": "/api/tutor/profile",
   "feeduserData": "/api/feed-user",
   "studentListForTutor": "/api/tutor/request",
-  "course": "/api/courses",
+  "course": "/api/all-courses",
   "addStudentInterest": "/api/student/interest",
   "addTutorProfile": "/api/tutor/profile",
   "deactivate": "/api/deactivate",
@@ -72,25 +72,6 @@ Map<String, String> textFieldErrors = {
   'add_interest_mandatory': 'add atleast one interest'
 };
 
-var enabledBorder_ = OutlineInputBorder(
-  borderRadius: BorderRadius.circular(30.0),
-  borderSide: const BorderSide(
-    color: Colors.black,
-    width: 2.0,
-  ),
-);
-var focusedBorder_ = OutlineInputBorder(
-  borderRadius: BorderRadius.circular(30.0),
-  borderSide: const BorderSide(
-    color: Colors.black,
-    width: 2.0,
-  ),
-);
-
-var errorBorder_ = OutlineInputBorder(
-  borderRadius: BorderRadius.circular(30.0),
-  borderSide: const BorderSide(
-    color: Color(0xFFFF0000),
-    width: 2.0,
-  ),
-);
+Map<String, String> commonConfig = {
+  'support_email': 'hello@tutoree.com',
+};
