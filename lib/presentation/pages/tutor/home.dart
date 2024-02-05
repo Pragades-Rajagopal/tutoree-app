@@ -16,6 +16,8 @@ class _TutorHomePageState extends State<TutorHomePage> {
   TutorApi apiService = TutorApi();
   List<Map<String, dynamic>> lists = [];
   bool _isApiLoading = true;
+  bool _loadingIndicator = false;
+  int selectedItem = -1;
 
   @override
   void initState() {
@@ -42,6 +44,17 @@ class _TutorHomePageState extends State<TutorHomePage> {
       lists.addAll(studentList.data);
       _isApiLoading = false;
     });
+  }
+
+  void switchLoadingIndicator() {
+    setState(() {
+      _loadingIndicator = !_loadingIndicator;
+    });
+  }
+
+  Future<void> hideStudentReqDo(int studentId, int tutorId) async {
+    // api integration
+    switchLoadingIndicator();
   }
 
   @override
@@ -159,6 +172,52 @@ class _TutorHomePageState extends State<TutorHomePage> {
                           color: Color(0xFF616161),
                         ),
                       ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 6, 20, 10),
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      child: lists[index]["tutorReqHide"] == 1
+                          ? const Text(
+                              'marked as done',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Color.fromRGBO(189, 189, 189, 1),
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w400,
+                                height: 0,
+                              ),
+                            )
+                          : GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _loadingIndicator = true;
+                                  selectedItem = index;
+                                });
+                                hideStudentReqDo(1, 1);
+                              },
+                              child: _loadingIndicator && selectedItem == index
+                                  ? const SizedBox(
+                                      height: 21,
+                                      width: 21,
+                                      child: CircularProgressIndicator(
+                                        color: Colors.black,
+                                        strokeWidth: 2.0,
+                                        strokeCap: StrokeCap.square,
+                                      ),
+                                    )
+                                  : const Text(
+                                      'mark as done',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Color.fromARGB(255, 92, 80, 255),
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.w400,
+                                        height: 0,
+                                      ),
+                                    ),
+                            ),
                     ),
                   ),
                 ],

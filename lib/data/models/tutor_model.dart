@@ -12,6 +12,7 @@ class StudentList {
         "mobile_no": json[i]["mobile_no"],
         "interests": json[i]["interests"],
         "studentId": json[i]["student_id"],
+        "tutorReqHide": json[i]["tutor_req_hide"],
       });
     }
   }

@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 Map<String, String> endpoints = {
   "login": "/api/login",
   "logout": "/api/logout",
