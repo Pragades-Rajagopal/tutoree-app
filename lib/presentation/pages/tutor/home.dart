@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tutoree_app/config/constants.dart';
 import 'package:tutoree_app/data/models/tutor_model.dart';
 import 'package:tutoree_app/data/services/tutor_api_service.dart';
+import 'package:tutoree_app/presentation/utils/common_utils.dart';
 
 class TutorHomePage extends StatefulWidget {
   const TutorHomePage({super.key});
@@ -14,6 +16,7 @@ class TutorHomePage extends StatefulWidget {
 class _TutorHomePageState extends State<TutorHomePage> {
   int userId = 0;
   TutorApi apiService = TutorApi();
+  HideStudentReqResponse? hideStudentReqResp;
   List<Map<String, dynamic>> lists = [];
   bool _isApiLoading = true;
   bool _loadingIndicator = false;
@@ -53,8 +56,22 @@ class _TutorHomePageState extends State<TutorHomePage> {
   }
 
   Future<void> hideStudentReqDo(int studentId, int tutorId) async {
-    // api integration
+    hideStudentReqResp = await apiService.hideRequest({
+      "tutorId": tutorId,
+      "studentId": studentId,
+    });
     switchLoadingIndicator();
+    if (hideStudentReqResp!.statusCode == 200) {
+      successSnackBar(
+        alertDialog['commonSuccess']!,
+        alertDialog['hideRequestSuccess']!,
+      );
+    } else {
+      errorSnackBar(
+        alertDialog['oops']!,
+        alertDialog['commonError']!,
+      );
+    }
   }
 
   @override
@@ -111,6 +128,9 @@ class _TutorHomePageState extends State<TutorHomePage> {
         itemCount: lists.length,
         itemBuilder: (context, index) {
           return Card(
+            color: lists[index]["tutorReqHide"] == 1
+                ? Colors.grey.shade50
+                : Colors.white,
             margin: const EdgeInsets.symmetric(
               horizontal: 2.0,
               vertical: 5.0,
@@ -133,15 +153,26 @@ class _TutorHomePageState extends State<TutorHomePage> {
                 backgroundColor: Colors.grey.shade50,
                 title: Padding(
                   padding: const EdgeInsets.fromLTRB(0, 4, 0, 0),
-                  child: Text(
-                    lists[index]["studentName"],
-                    style: GoogleFonts.poppins(
-                      textStyle: const TextStyle(
-                        fontSize: 16.0,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
+                  child: lists[index]["tutorReqHide"] == 1
+                      ? Text(
+                          lists[index]["studentName"],
+                          style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.black,
+                              decoration: TextDecoration.lineThrough,
+                            ),
+                          ),
+                        )
+                      : Text(
+                          lists[index]["studentName"],
+                          style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
                 ),
                 subtitle: Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 4),
@@ -195,7 +226,10 @@ class _TutorHomePageState extends State<TutorHomePage> {
                                   _loadingIndicator = true;
                                   selectedItem = index;
                                 });
-                                hideStudentReqDo(1, 1);
+                                hideStudentReqDo(
+                                  lists[index]["studentId"],
+                                  userId,
+                                );
                               },
                               child: _loadingIndicator && selectedItem == index
                                   ? const SizedBox(

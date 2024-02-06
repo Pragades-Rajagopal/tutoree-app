@@ -86,3 +86,19 @@ class PostTutorProfiletRes {
     message = json["message"];
   }
 }
+
+/// Response model to hide student request
+class HideStudentReqResponse {
+  int? statusCode;
+  String? message;
+
+  HideStudentReqResponse({
+    this.statusCode,
+    this.message,
+  });
+
+  HideStudentReqResponse.fromJson(Map<String, dynamic> json) {
+    statusCode = json["statusCode"];
+    message = json["message"];
+  }
+}

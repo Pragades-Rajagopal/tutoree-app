@@ -36,4 +36,17 @@ class TutorApi {
     PostTutorProfiletRes result = PostTutorProfiletRes.fromJson(body);
     return result;
   }
+
+  Future<HideStudentReqResponse> hideRequest(
+      Map<String, dynamic> request) async {
+    final env = await accessENV(assetsFileName: '.env');
+    var response = await http.post(
+      Uri.parse('${env["URL"]}${endpoints["tutorHideStudentReq"]}'),
+      body: json.encode(request),
+      headers: apiHeader,
+    );
+    var body = jsonDecode(response.body);
+    HideStudentReqResponse result = HideStudentReqResponse.fromJson(body);
+    return result;
+  }
 }

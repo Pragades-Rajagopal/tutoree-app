@@ -15,6 +15,7 @@ Map<String, String> endpoints = {
   "course": "/api/all-courses",
   "addStudentInterest": "/api/student/interest",
   "addTutorProfile": "/api/tutor/profile",
+  "tutorHideStudentReq": "/api/tutor/request-hide",
   "deactivate": "/api/deactivate",
 };
 
@@ -45,6 +46,7 @@ Map<String, String> alertDialog = {
   'tutorReqExists': 'request has already been sent',
   'tutorReqError': 'unable to send request at this moment',
   'tutorReqSuccess': 'request sent successfully',
+  'hideRequestSuccess': 'request marked as done',
   'addFeedError': 'unable to add feed at this moment',
   'addFeedSuccess': 'feed added successfully',
   'addIntrstCheckError':
