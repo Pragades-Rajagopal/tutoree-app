@@ -79,7 +79,9 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
     _scrollController.addListener(() {
       if (_scrollController.position.maxScrollExtent ==
           _scrollController.position.pixels) {
-        getFeedsDo(_limit, _offset);
+        if (_hasFeedData) {
+          getFeedsDo(_limit, _offset);
+        }
       }
     });
   }
@@ -121,6 +123,7 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
               _isApiLoading = true;
               feedList.clear();
               _offset = 0;
+              _hasFeedData = true;
             });
             await getFeedsDo(_limit, _offset);
           },
