@@ -23,6 +23,7 @@ class StudentEditProfilePage extends StatefulWidget {
 class _StudentEditProfilePageState extends State<StudentEditProfilePage> {
   final GlobalKey<FormFieldState> _key = GlobalKey<FormFieldState>();
   int userId = 0;
+  String token = '';
   List<Course> courseList = [];
   CourseApi courseApiService = CourseApi();
   List<int> selectCourses = [];
@@ -57,6 +58,7 @@ class _StudentEditProfilePageState extends State<StudentEditProfilePage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       userId = int.parse(prefs.getString("user_id").toString());
+      token = prefs.getString("token")!;
     });
   }
 
@@ -71,7 +73,7 @@ class _StudentEditProfilePageState extends State<StudentEditProfilePage> {
     interestRes = await studentApiService.addInterests({
       "studentId": studentId,
       "courseIds": courseIds,
-    });
+    }, token);
     if (interestRes?.statusCode == 400) {
       errorSnackBar(
         alertDialog['oops']!,

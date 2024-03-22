@@ -15,6 +15,7 @@ class StudentHomePage extends StatefulWidget {
 
 class _StudentHomePageState extends State<StudentHomePage> {
   int userId = 0;
+  String token = '';
   StudentApi apiService = StudentApi();
   List<Map<String, dynamic>> lists = [];
   TutorRequestResponse? tutorReqRes;
@@ -39,11 +40,12 @@ class _StudentHomePageState extends State<StudentHomePage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       userId = int.parse(prefs.getString("user_id").toString());
+      token = prefs.getString("token")!;
     });
   }
 
   Future<void> getTutorListDo(int studentId) async {
-    TutorList tutorList = await apiService.getTutorlist(studentId);
+    TutorList tutorList = await apiService.getTutorlist(studentId, token);
     setState(() {
       lists.clear();
       lists.addAll(tutorList.data);
@@ -52,10 +54,13 @@ class _StudentHomePageState extends State<StudentHomePage> {
   }
 
   Future<void> sendTutorRequestDo(int studentId, int tutorId) async {
-    tutorReqRes = await apiService.sendTutorRequest({
-      "studentId": studentId,
-      "tutorId": tutorId,
-    });
+    tutorReqRes = await apiService.sendTutorRequest(
+      {
+        "studentId": studentId,
+        "tutorId": tutorId,
+      },
+      token,
+    );
     switchLoadingIndicator();
     if (tutorReqRes!.statusCode == 400) {
       errorSnackBar(

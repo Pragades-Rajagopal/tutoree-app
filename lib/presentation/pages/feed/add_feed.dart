@@ -21,6 +21,7 @@ class _AddFeedPageState extends State<AddFeedPage> {
   bool _loadingIndicator = false;
   var userName = '';
   var userType = '';
+  var token = '';
   var userId = 0;
 
   AddFeedResponse? addFeedResponse;
@@ -38,6 +39,7 @@ class _AddFeedPageState extends State<AddFeedPage> {
       userName = prefs.getString("user_name")!;
       userType = prefs.getString("user_type")!;
       userId = int.parse(prefs.getString("user_id").toString());
+      token = prefs.getString("token")!;
     });
   }
 
@@ -53,11 +55,14 @@ class _AddFeedPageState extends State<AddFeedPage> {
     int createdById,
     String createdBy,
   ) async {
-    addFeedResponse = await feedsApi.saveFeed({
-      "content": content,
-      "createdById": createdById,
-      "createdBy": createdBy,
-    });
+    addFeedResponse = await feedsApi.saveFeed(
+      {
+        "content": content,
+        "createdById": createdById,
+        "createdBy": createdBy,
+      },
+      token,
+    );
     if (addFeedResponse!.statusCode == 500) {
       errorSnackBar(
         alertDialog["oops"]!,

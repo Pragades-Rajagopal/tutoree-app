@@ -25,6 +25,7 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
   List<Map<String, dynamic>> feedList = [];
   bool _isApiLoading = true;
   int _userId = 0;
+  String _token = '';
   // feed pagination
   final int _limit = 25;
   int _offset = 0;
@@ -34,7 +35,6 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
   void initState() {
     super.initState();
     getTokenData();
-    getFeedsDo(_limit, _offset);
     hideAddButton();
     pagination();
   }
@@ -49,7 +49,9 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       _userId = int.parse(prefs.getString("user_id").toString());
+      _token = prefs.getString("token")!;
     });
+    getFeedsDo(_limit, _offset, _token);
   }
 
   ///Hides add (floating action button) upon scrolling
@@ -80,14 +82,14 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
       if (_scrollController.position.maxScrollExtent ==
           _scrollController.position.pixels) {
         if (_hasFeedData) {
-          getFeedsDo(_limit, _offset);
+          getFeedsDo(_limit, _offset, _token);
         }
       }
     });
   }
 
-  Future<void> getFeedsDo(int limit, int offset) async {
-    feedsListRes = await apiService.getGlobalFeeds(limit, offset);
+  Future<void> getFeedsDo(int limit, int offset, String token) async {
+    feedsListRes = await apiService.getGlobalFeeds(limit, offset, token);
     int localOffset = _offset + 25;
     setState(() {
       // feedList.clear();
@@ -101,7 +103,7 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
   }
 
   Future<void> getFeedUserDataDo(int userId) async {
-    feedUserDataRes = await apiService.getFeedUserData(userId);
+    feedUserDataRes = await apiService.getFeedUserData(userId, _token);
     if (feedUserDataRes!.email != null) {
       if (!mounted) return;
       bottomSheet(context);
@@ -125,7 +127,7 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
               _offset = 0;
               _hasFeedData = true;
             });
-            await getFeedsDo(_limit, _offset);
+            await getFeedsDo(_limit, _offset, _token);
           },
           color: Colors.black,
           child: _isApiLoading

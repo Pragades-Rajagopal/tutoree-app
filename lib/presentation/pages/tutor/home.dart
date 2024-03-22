@@ -15,6 +15,7 @@ class TutorHomePage extends StatefulWidget {
 
 class _TutorHomePageState extends State<TutorHomePage> {
   int userId = 0;
+  String _token = '';
   TutorApi apiService = TutorApi();
   HideStudentReqResponse? hideStudentReqResp;
   List<Map<String, dynamic>> lists = [];
@@ -30,18 +31,20 @@ class _TutorHomePageState extends State<TutorHomePage> {
 
   void initStateMethods() async {
     await getTokenData();
-    await getStudentListForTutorDo(userId);
+    await getStudentListForTutorDo(userId, _token);
   }
 
   Future<void> getTokenData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       userId = int.parse(prefs.getString("user_id").toString());
+      _token = prefs.getString("token")!;
     });
   }
 
-  Future<void> getStudentListForTutorDo(int tutorId) async {
-    StudentList studentList = await apiService.getStudentListForTutor(tutorId);
+  Future<void> getStudentListForTutorDo(int tutorId, String token) async {
+    StudentList studentList =
+        await apiService.getStudentListForTutor(tutorId, token);
     setState(() {
       lists.clear();
       lists.addAll(studentList.data);
@@ -59,7 +62,7 @@ class _TutorHomePageState extends State<TutorHomePage> {
     hideStudentReqResp = await apiService.hideRequest({
       "tutorId": tutorId,
       "studentId": studentId,
-    });
+    }, _token);
     switchLoadingIndicator();
     if (hideStudentReqResp!.statusCode == 200) {
       successSnackBar(
@@ -80,7 +83,7 @@ class _TutorHomePageState extends State<TutorHomePage> {
       backgroundColor: Colors.white,
       body: RefreshIndicator(
           onRefresh: () async {
-            await getStudentListForTutorDo(userId);
+            await getStudentListForTutorDo(userId, _token);
           },
           color: Colors.black,
           child: _isApiLoading

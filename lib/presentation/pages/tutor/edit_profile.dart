@@ -31,6 +31,7 @@ class _TutorEditProfilePageState extends State<TutorEditProfilePage> {
   final bioController = TextEditingController();
   final websiteController = TextEditingController();
   int userId = 0;
+  String _token = '';
   List<Course> courseList = [];
   CourseApi courseApiService = CourseApi();
   List<int> selectCourses = [];
@@ -69,6 +70,7 @@ class _TutorEditProfilePageState extends State<TutorEditProfilePage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       userId = int.parse(prefs.getString("user_id").toString());
+      _token = prefs.getString("token")!;
     });
   }
 
@@ -79,20 +81,18 @@ class _TutorEditProfilePageState extends State<TutorEditProfilePage> {
     });
   }
 
-  Future<void> addProfileDo(
-    int tutorId,
-    List<int> courseIds,
-    String bio,
-    String website,
-    int mailSubscription,
-  ) async {
-    postTutorProfiletRes = await tutorApiService.addProfile({
-      "tutorId": tutorId,
-      "courseIds": courseIds,
-      "bio": bio,
-      "websites": website,
-      "mailSubscription": mailSubscription,
-    });
+  Future<void> addProfileDo(int tutorId, List<int> courseIds, String bio,
+      String website, int mailSubscription, String token) async {
+    postTutorProfiletRes = await tutorApiService.addProfile(
+      {
+        "tutorId": tutorId,
+        "courseIds": courseIds,
+        "bio": bio,
+        "websites": website,
+        "mailSubscription": mailSubscription,
+      },
+      token,
+    );
     if (postTutorProfiletRes?.statusCode == 400) {
       errorSnackBar(
         alertDialog['oops']!,
@@ -262,6 +262,7 @@ class _TutorEditProfilePageState extends State<TutorEditProfilePage> {
                         bioController.text,
                         websiteController.text,
                         _mailSubSelectorValue,
+                        _token,
                       );
                     });
                   }

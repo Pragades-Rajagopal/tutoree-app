@@ -24,6 +24,7 @@ class StudentProfilePage extends StatefulWidget {
 
 class _StudentProfilePageState extends State<StudentProfilePage> {
   int _userId = 0;
+  String token = '';
   String _userEmail = '';
   StudentApi apiService = StudentApi();
   FeedsApi feedsApiService = FeedsApi();
@@ -51,12 +52,13 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
     setState(() {
       _userId = int.parse(prefs.getString("user_id").toString());
       _userEmail = prefs.getString("user_email")!;
+      token = prefs.getString("token")!;
     });
     getStudentProfileDo(_userId);
   }
 
   Future<void> getStudentProfileDo(int userId) async {
-    studentProfile = await apiService.getStudentProfile(userId);
+    studentProfile = await apiService.getStudentProfile(userId, token);
     setState(() {
       feeds.clear();
       interests.clear();
@@ -76,7 +78,7 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
     setState(() {
       _isApiLoading = true;
     });
-    deleteFeedRes = await feedsApiService.deleteFeed(id);
+    deleteFeedRes = await feedsApiService.deleteFeed(id, token);
     if (deleteFeedRes!.statusCode == 400) {
       errorSnackBar(
         alertDialog['oops']!,

@@ -25,6 +25,7 @@ class TutorProfilePage extends StatefulWidget {
 class _TutorProfilePageState extends State<TutorProfilePage> {
   int _userId = 0;
   String _userEmail = '';
+  String _token = '';
   TutorApi apiService = TutorApi();
   FeedsApi feedsApiService = FeedsApi();
   LoginApi loginApiService = LoginApi();
@@ -51,12 +52,13 @@ class _TutorProfilePageState extends State<TutorProfilePage> {
     setState(() {
       _userId = int.parse(prefs.getString("user_id").toString());
       _userEmail = prefs.getString("user_email")!;
+      _token = prefs.getString("token")!;
     });
-    getStudentProfileDo(_userId);
+    getStudentProfileDo(_userId, _token);
   }
 
-  Future<void> getStudentProfileDo(int userId) async {
-    tutorProfile = await apiService.getTutorProfile(userId);
+  Future<void> getStudentProfileDo(int userId, String token) async {
+    tutorProfile = await apiService.getTutorProfile(userId, token);
     setState(() {
       feeds.clear();
       interests.clear();
@@ -76,7 +78,7 @@ class _TutorProfilePageState extends State<TutorProfilePage> {
     setState(() {
       _isApiLoading = true;
     });
-    deleteFeedRes = await feedsApiService.deleteFeed(id);
+    deleteFeedRes = await feedsApiService.deleteFeed(id, _token);
     if (deleteFeedRes!.statusCode == 400) {
       errorSnackBar(
         alertDialog['oops']!,
@@ -87,7 +89,7 @@ class _TutorProfilePageState extends State<TutorProfilePage> {
         alertDialog['commonSuccess']!,
         alertDialog['deleteFeed']!,
       );
-      getStudentProfileDo(_userId);
+      getStudentProfileDo(_userId, _token);
     }
   }
 

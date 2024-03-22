@@ -1,3 +1,4 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutoree_app/config/dotenv_config.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -5,10 +6,13 @@ import 'package:tutoree_app/config/constants.dart';
 import 'package:tutoree_app/data/models/student_model.dart';
 
 class StudentApi {
-  Future<TutorList> getTutorlist(int studentId) async {
+  Future<TutorList> getTutorlist(int studentId, String token) async {
     final env = await accessENV(assetsFileName: '.env');
+    apiHeader["Authorization"] = 'Bearer $token';
     var response = await http.get(
-        Uri.parse('${env["URL"]}${endpoints["studentTutorList"]}/$studentId'));
+      Uri.parse('${env["URL"]}${endpoints["studentTutorList"]}/$studentId'),
+      headers: apiHeader,
+    );
     var body = jsonDecode(response.body);
     var data = body["data"]["tutorLists"];
     TutorList result = TutorList.fromJson(data);
@@ -16,8 +20,9 @@ class StudentApi {
   }
 
   Future<TutorRequestResponse> sendTutorRequest(
-      Map<String, dynamic> request) async {
+      Map<String, dynamic> request, String token) async {
     final env = await accessENV(assetsFileName: '.env');
+    apiHeader["Authorization"] = 'Bearer $token';
     var response = await http.post(
       Uri.parse('${env["URL"]}${endpoints["sendTutorRequest"]}'),
       body: json.encode(request),
@@ -28,10 +33,13 @@ class StudentApi {
     return result;
   }
 
-  Future<StudentProfile> getStudentProfile(int studentId) async {
+  Future<StudentProfile> getStudentProfile(int studentId, String token) async {
     final env = await accessENV(assetsFileName: '.env');
+    apiHeader["Authorization"] = 'Bearer $token';
     var response = await http.get(
-        Uri.parse('${env["URL"]}${endpoints["studentProfile"]}/$studentId'));
+      Uri.parse('${env["URL"]}${endpoints["studentProfile"]}/$studentId'),
+      headers: apiHeader,
+    );
     var body = jsonDecode(response.body);
     var data = body["data"];
     StudentProfile result = StudentProfile.fromJson(data);
@@ -39,8 +47,9 @@ class StudentApi {
   }
 
   Future<PostStudentInterestRes> addInterests(
-      Map<String, dynamic> request) async {
+      Map<String, dynamic> request, String token) async {
     final env = await accessENV(assetsFileName: '.env');
+    apiHeader["Authorization"] = 'Bearer $token';
     var response = await http.post(
       Uri.parse('${env["URL"]}${endpoints["addStudentInterest"]}'),
       body: json.encode(request),
