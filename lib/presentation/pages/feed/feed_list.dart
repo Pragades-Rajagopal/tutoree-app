@@ -21,6 +21,7 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
   bool _addIconVisible = true;
   FeedsListResponse? feedsListRes;
   FeedUserData? feedUserDataRes;
+  UpdateUpvoteResponse? updateUpvoteRes;
   FeedsApi apiService = FeedsApi();
   List<Map<String, dynamic>> feedList = [];
   bool _isApiLoading = true;
@@ -108,6 +109,10 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
       if (!mounted) return;
       bottomSheet(context);
     }
+  }
+
+  Future<void> updateUpvoteDo(int id, String token) async {
+    updateUpvoteRes = await apiService.updateUpvote(id, token);
   }
 
   @override
@@ -211,7 +216,7 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 14),
                       child: LinkifyText(
                         lists[index]["content"],
                         linkStyle: const TextStyle(
@@ -238,6 +243,42 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
                           }
                         },
                       ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        GestureDetector(
+                          child: const Icon(
+                            Icons.arrow_upward_sharp,
+                            size: 18.0,
+                          ),
+                          onTap: () async {
+                            await updateUpvoteDo(lists[index]["id"], _token);
+                          },
+                        ),
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                        lists[index]["upvotes"] == 0 ||
+                                lists[index]["upvotes"] == 1
+                            ? Text(
+                                '${lists[index]["upvotes"]} upvote',
+                                style: const TextStyle(
+                                  fontSize: 12.0,
+                                  color: Color(0xFF757575),
+                                ),
+                              )
+                            : Text(
+                                '${lists[index]["upvotes"]} upvotes',
+                                style: const TextStyle(
+                                  fontSize: 12.0,
+                                  color: Color(0xFF757575),
+                                ),
+                              ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 6.0,
                     ),
                     Container(
                       color: Colors.grey.shade100,
@@ -323,7 +364,7 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
+                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 4),
                     child: Text(
                       '${feedUserDataRes?.name}',
                       style: const TextStyle(
@@ -334,15 +375,26 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 14),
                     child: Text(
-                      '${feedUserDataRes?.email}',
+                      '${feedUserDataRes?.userType}',
                       style: const TextStyle(
-                        fontSize: 18.0,
-                        color: Color(0xFF484848),
+                        fontSize: 16.0,
+                        color: Color.fromARGB(255, 141, 141, 141),
                       ),
+                      textAlign: TextAlign.center,
                     ),
                   ),
+                  // Padding(
+                  //   padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                  //   child: Text(
+                  //     '${feedUserDataRes?.email}',
+                  //     style: const TextStyle(
+                  //       fontSize: 18.0,
+                  //       color: Color(0xFF484848),
+                  //     ),
+                  //   ),
+                  // ),
                   feedUserDataRes?.websites != null
                       ? Padding(
                           padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),

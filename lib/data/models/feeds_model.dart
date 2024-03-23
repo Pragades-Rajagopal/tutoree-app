@@ -7,6 +7,7 @@ class FeedsListResponse {
       data.add({
         "id": json[i]["id"],
         "content": json[i]["content"],
+        "upvotes": json[i]["upvotes"],
         "createdBy": json[i]["created_by"],
         "createdById": json[i]["created_by_id"],
         "createdOn": json[i]["created_on"],
@@ -74,5 +75,20 @@ class FeedUserData {
     websites = json["websites"];
     interests = json["interests"];
     userType = json["userType"];
+  }
+}
+
+class UpdateUpvoteResponse {
+  int? statusCode;
+  String? message;
+
+  UpdateUpvoteResponse({
+    this.statusCode,
+    this.message,
+  });
+
+  UpdateUpvoteResponse.fromJson(Map<String, dynamic> json) {
+    statusCode = json["statusCode"];
+    message = json["message"];
   }
 }

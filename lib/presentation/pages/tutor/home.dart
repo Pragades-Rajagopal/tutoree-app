@@ -58,11 +58,12 @@ class _TutorHomePageState extends State<TutorHomePage> {
     });
   }
 
-  Future<void> hideStudentReqDo(int studentId, int tutorId) async {
+  Future<void> hideStudentReqDo(
+      int studentId, int tutorId, String token) async {
     hideStudentReqResp = await apiService.hideRequest({
       "tutorId": tutorId,
       "studentId": studentId,
-    }, _token);
+    }, token);
     switchLoadingIndicator();
     if (hideStudentReqResp!.statusCode == 200) {
       successSnackBar(
@@ -230,9 +231,7 @@ class _TutorHomePageState extends State<TutorHomePage> {
                                   selectedItem = index;
                                 });
                                 hideStudentReqDo(
-                                  lists[index]["studentId"],
-                                  userId,
-                                );
+                                    lists[index]["studentId"], userId, _token);
                               },
                               child: _loadingIndicator && selectedItem == index
                                   ? const SizedBox(

@@ -1,4 +1,3 @@
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutoree_app/config/dotenv_config.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';

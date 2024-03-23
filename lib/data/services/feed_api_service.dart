@@ -48,6 +48,7 @@ class FeedsApi {
 
   Future<FeedUserData> getFeedUserData(int userId, String token) async {
     final env = await accessENV(assetsFileName: '.env');
+    apiHeader["Authorization"] = 'Bearer $token';
     var response = await http.get(
       Uri.parse('${env["URL"]}${endpoints["feeduserData"]}/$userId'),
       headers: apiHeader,
@@ -55,6 +56,18 @@ class FeedsApi {
     var body = jsonDecode(response.body);
     var data = body["data"];
     FeedUserData result = FeedUserData.fromJson(data);
+    return result;
+  }
+
+  Future<UpdateUpvoteResponse> updateUpvote(int id, String token) async {
+    final env = await accessENV(assetsFileName: '.env');
+    apiHeader["Authorization"] = 'Bearer $token';
+    var response = await http.put(
+      Uri.parse('${env["URL"]}${endpoints["feed"]}/$id/upvote'),
+      headers: apiHeader,
+    );
+    var body = jsonDecode(response.body);
+    UpdateUpvoteResponse result = UpdateUpvoteResponse.fromJson(body);
     return result;
   }
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutoree_app/presentation/pages/feed/feed_list.dart';
 import 'package:tutoree_app/presentation/pages/student/home.dart';
 import 'package:tutoree_app/presentation/pages/student/profile.dart';
+import 'package:tutoree_app/presentation/utils/common_utils.dart';
 
 class StudentPage extends StatefulWidget {
   final int index;
@@ -52,42 +52,20 @@ class _StudentPageState extends State<StudentPage> {
     return Scaffold(
       appBar: appBar(),
       body: _widget[_currentIndex],
-      bottomNavigationBar: Container(
-        color: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 50.0,
-            vertical: 6.0,
-          ),
-          child: GNav(
-            selectedIndex: _currentIndex,
-            onTabChange: (int index) {
-              setState(() {
-                _currentIndex = index;
-              });
-            },
-            backgroundColor: Colors.white,
-            color: Colors.black,
-            activeColor: Colors.black,
-            tabBackgroundColor: Colors.grey.shade300,
-            padding: const EdgeInsets.all(12.0),
-            gap: 1,
-            tabs: const [
-              GButton(
-                icon: Icons.home_filled,
-                text: 'home',
-              ),
-              GButton(
-                icon: Icons.feed,
-                text: 'feeds',
-              ),
-              GButton(
-                icon: Icons.account_box_rounded,
-                text: 'profile',
-              ),
-            ],
-          ),
-        ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (int index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        elevation: 0,
+        backgroundColor: Colors.white,
+        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey.shade500,
+        iconSize: 24.0,
+        type: BottomNavigationBarType.fixed,
+        items: bottomNavBar,
       ),
     );
   }
