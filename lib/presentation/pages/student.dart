@@ -17,13 +17,9 @@ class StudentPage extends StatefulWidget {
 }
 
 class _StudentPageState extends State<StudentPage> {
+  final PageController _pageController = PageController();
   String? userName;
   var _currentIndex = 0;
-  List<String> headers = [
-    'home',
-    'feeds',
-    'profile',
-  ];
 
   @override
   void initState() {
@@ -51,13 +47,24 @@ class _StudentPageState extends State<StudentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(),
-      body: _widget[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (int index) {
+      body: PageView(
+        physics: const BouncingScrollPhysics(),
+        controller: _pageController,
+        children: _widget,
+        onPageChanged: (index) {
           setState(() {
             _currentIndex = index;
           });
+        },
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (int index) {
+          _pageController.animateToPage(
+            index,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          );
         },
         elevation: 0,
         backgroundColor: Colors.white,
@@ -65,6 +72,8 @@ class _StudentPageState extends State<StudentPage> {
         unselectedItemColor: Colors.grey.shade500,
         iconSize: 24.0,
         type: BottomNavigationBarType.fixed,
+        selectedFontSize: 12.0,
+        unselectedFontSize: 12.0,
         items: bottomNavBar,
       ),
     );
@@ -82,7 +91,7 @@ class _StudentPageState extends State<StudentPage> {
           "Welcome, $userName",
           style: const TextStyle(
             fontSize: 16.0,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w100,
           ),
         ),
       ),

@@ -79,15 +79,18 @@ var errorBorder_ = OutlineInputBorder(
 
 const bottomNavBar = <BottomNavigationBarItem>[
   BottomNavigationBarItem(
-    icon: Icon(Icons.home_filled),
+    icon: Icon(Icons.home_outlined),
+    activeIcon: Icon(Icons.home),
     label: 'home',
   ),
   BottomNavigationBarItem(
-    icon: Icon(Icons.feed),
+    icon: Icon(Icons.feed_outlined),
+    activeIcon: Icon(Icons.feed),
     label: 'feeds',
   ),
   BottomNavigationBarItem(
-    icon: Icon(Icons.account_box_rounded),
+    icon: Icon(Icons.account_box_outlined),
+    activeIcon: Icon(Icons.account_box_rounded),
     label: 'profile',
   ),
 ];

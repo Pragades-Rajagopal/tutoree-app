@@ -17,13 +17,9 @@ class TutorPage extends StatefulWidget {
 }
 
 class _TutorPageState extends State<TutorPage> {
+  final PageController _pageController = PageController();
   String? userName;
   var _currentIndex = 0;
-  List<String> headers = [
-    'home',
-    'feeds',
-    'profile',
-  ];
 
   @override
   void initState() {
@@ -51,13 +47,24 @@ class _TutorPageState extends State<TutorPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(),
-      body: _widget[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (int index) {
+      body: PageView(
+        physics: const BouncingScrollPhysics(),
+        controller: _pageController,
+        children: _widget,
+        onPageChanged: (index) {
           setState(() {
             _currentIndex = index;
           });
+        },
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (int index) {
+          _pageController.animateToPage(
+            index,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          );
         },
         elevation: 0,
         backgroundColor: Colors.white,
@@ -65,6 +72,8 @@ class _TutorPageState extends State<TutorPage> {
         unselectedItemColor: Colors.grey.shade500,
         iconSize: 24.0,
         type: BottomNavigationBarType.fixed,
+        selectedFontSize: 12.0,
+        unselectedFontSize: 12.0,
         items: bottomNavBar,
       ),
     );
@@ -80,6 +89,10 @@ class _TutorPageState extends State<TutorPage> {
         color: Colors.black,
         child: Text(
           "Welcome, $userName",
+          style: const TextStyle(
+            fontSize: 16.0,
+            fontWeight: FontWeight.w100,
+          ),
         ),
       ),
       // centerTitle: true,
