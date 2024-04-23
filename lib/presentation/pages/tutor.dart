@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutoree_app/presentation/pages/feed/feed_list.dart';
+import 'package:tutoree_app/presentation/pages/search.dart';
 import 'package:tutoree_app/presentation/pages/tutor/home.dart';
 import 'package:tutoree_app/presentation/pages/tutor/profile.dart';
 import 'package:tutoree_app/presentation/utils/common_utils.dart';
@@ -17,7 +18,7 @@ class TutorPage extends StatefulWidget {
 }
 
 class _TutorPageState extends State<TutorPage> {
-  final PageController _pageController = PageController();
+  late PageController _pageController = PageController();
   String? userName;
   var _currentIndex = 0;
 
@@ -27,6 +28,7 @@ class _TutorPageState extends State<TutorPage> {
     getTokenData();
     setState(() {
       _currentIndex = widget.index;
+      _pageController = PageController(initialPage: _currentIndex);
     });
   }
 
@@ -40,6 +42,7 @@ class _TutorPageState extends State<TutorPage> {
   static final List<Widget> _widget = [
     const TutorHomePage(),
     const CommonFeedsPage(),
+    const SearchPage(),
     const TutorProfilePage(),
   ];
 
@@ -57,24 +60,30 @@ class _TutorPageState extends State<TutorPage> {
           });
         },
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (int index) {
-          _pageController.animateToPage(
-            index,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-          );
-        },
-        elevation: 0,
-        backgroundColor: Colors.white,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey.shade500,
-        iconSize: 24.0,
-        type: BottomNavigationBarType.fixed,
-        selectedFontSize: 12.0,
-        unselectedFontSize: 12.0,
-        items: bottomNavBar,
+      bottomNavigationBar: Theme(
+        data: ThemeData(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          onTap: (int index) {
+            _pageController.animateToPage(
+              index,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+            );
+          },
+          elevation: 0,
+          backgroundColor: Colors.white,
+          selectedItemColor: Colors.black,
+          unselectedItemColor: Colors.grey.shade500,
+          iconSize: 24.0,
+          type: BottomNavigationBarType.fixed,
+          selectedFontSize: 12.0,
+          unselectedFontSize: 12.0,
+          items: bottomNavBar,
+        ),
       ),
     );
   }

@@ -204,6 +204,7 @@ class _TutorEditProfilePageState extends State<TutorEditProfilePage> {
               SizedBox(
                 width: 350,
                 child: MultiSelectDialogField(
+                  backgroundColor: Colors.white,
                   title: const Text('select interests'),
                   buttonText: const Text(
                     'select interests',

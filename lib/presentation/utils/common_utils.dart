@@ -89,6 +89,11 @@ const bottomNavBar = <BottomNavigationBarItem>[
     label: 'feeds',
   ),
   BottomNavigationBarItem(
+    icon: Icon(Icons.search_outlined),
+    activeIcon: Icon(Icons.search),
+    label: 'search',
+  ),
+  BottomNavigationBarItem(
     icon: Icon(Icons.account_box_outlined),
     activeIcon: Icon(Icons.account_box_rounded),
     label: 'profile',

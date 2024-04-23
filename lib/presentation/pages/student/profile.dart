@@ -130,10 +130,9 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      onPopInvoked: (_) async {
         await SystemNavigator.pop();
-        return true;
       },
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -197,6 +196,7 @@ class _StudentProfilePageState extends State<StudentProfilePage> {
                         ),
                       ),
                       Wrap(
+                        spacing: 6.0,
                         children: List<Widget>.generate(
                           interests.length,
                           (int index) {

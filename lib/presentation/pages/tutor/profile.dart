@@ -130,10 +130,9 @@ class _TutorProfilePageState extends State<TutorProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      onPopInvoked: (_) async {
         await SystemNavigator.pop();
-        return true;
       },
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -243,6 +242,7 @@ class _TutorProfilePageState extends State<TutorProfilePage> {
                         ),
                       ),
                       Wrap(
+                        spacing: 6.0,
                         children: List<Widget>.generate(
                           interests.length,
                           (int index) {
@@ -255,7 +255,7 @@ class _TutorProfilePageState extends State<TutorProfilePage> {
                                     fontSize: 12.0,
                                   ),
                                 ),
-                                backgroundColor: Colors.grey.shade200,
+                                backgroundColor: Colors.grey.shade100,
                               ),
                             );
                           },

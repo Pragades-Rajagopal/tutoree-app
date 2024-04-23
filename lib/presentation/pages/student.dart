@@ -17,7 +17,7 @@ class StudentPage extends StatefulWidget {
 }
 
 class _StudentPageState extends State<StudentPage> {
-  final PageController _pageController = PageController();
+  late PageController _pageController = PageController();
   String? userName;
   var _currentIndex = 0;
 
@@ -27,6 +27,7 @@ class _StudentPageState extends State<StudentPage> {
     getTokenData();
     setState(() {
       _currentIndex = widget.index;
+      _pageController = PageController(initialPage: _currentIndex);
     });
   }
 
@@ -57,24 +58,30 @@ class _StudentPageState extends State<StudentPage> {
           });
         },
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (int index) {
-          _pageController.animateToPage(
-            index,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-          );
-        },
-        elevation: 0,
-        backgroundColor: Colors.white,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey.shade500,
-        iconSize: 24.0,
-        type: BottomNavigationBarType.fixed,
-        selectedFontSize: 12.0,
-        unselectedFontSize: 12.0,
-        items: bottomNavBar,
+      bottomNavigationBar: Theme(
+        data: ThemeData(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          onTap: (int index) {
+            _pageController.animateToPage(
+              index,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+            );
+          },
+          elevation: 0,
+          backgroundColor: Colors.white,
+          selectedItemColor: Colors.black,
+          unselectedItemColor: Colors.grey.shade500,
+          iconSize: 24.0,
+          type: BottomNavigationBarType.fixed,
+          selectedFontSize: 12.0,
+          unselectedFontSize: 12.0,
+          items: bottomNavBar,
+        ),
       ),
     );
   }

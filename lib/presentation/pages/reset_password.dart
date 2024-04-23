@@ -90,7 +90,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
         alertDialog['rerouteLoginPage']!,
       );
       Future.delayed(const Duration(seconds: 2), () {
-        Get.to(() => const LoginPage());
+        Get.offAll(() => const LoginPage());
       });
     }
   }

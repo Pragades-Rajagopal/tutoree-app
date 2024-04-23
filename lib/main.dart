@@ -37,6 +37,14 @@ class MyApp extends StatelessWidget {
           labelSmall: GoogleFonts.poppins(),
           labelMedium: GoogleFonts.poppins(),
         ),
+        cardTheme: const CardTheme(
+          surfaceTintColor: Colors.white,
+          color: Colors.white,
+        ),
+        bottomSheetTheme: const BottomSheetThemeData(
+          surfaceTintColor: Colors.white,
+          backgroundColor: Colors.white,
+        ),
       ),
       initialRoute: token == null ? "/" : "user",
       routes: {

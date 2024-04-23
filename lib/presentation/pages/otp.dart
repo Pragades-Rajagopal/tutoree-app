@@ -80,17 +80,15 @@ class _OtpPageState extends State<OtpPage> {
         alertDialog['rerouteLoginPage']!,
       );
       Future.delayed(const Duration(seconds: 2), () {
-        Get.to(() => const LoginPage());
+        Get.offAll(() => const LoginPage());
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        return false;
-      },
+    return PopScope(
+      canPop: false,
       child: Scaffold(
         backgroundColor: Colors.white,
         body: Center(

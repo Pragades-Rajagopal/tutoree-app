@@ -107,6 +107,7 @@ class _StudentEditProfilePageState extends State<StudentEditProfilePage> {
               SizedBox(
                 width: 350,
                 child: MultiSelectDialogField(
+                  backgroundColor: Colors.white,
                   title: const Text('select interests'),
                   buttonText: const Text('select interests'),
                   key: _key,

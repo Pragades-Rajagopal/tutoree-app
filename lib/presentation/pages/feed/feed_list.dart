@@ -117,10 +117,9 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        SystemNavigator.pop();
-        return true;
+    return PopScope(
+      onPopInvoked: (_) async {
+        await SystemNavigator.pop();
       },
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -170,7 +169,10 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
                 backgroundColor: Colors.black87,
                 splashColor: Colors.grey,
                 tooltip: 'add feed',
-                child: const Icon(Icons.add),
+                child: const Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
               )
             : null,
       ),
@@ -348,6 +350,7 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
 
   Future<dynamic> bottomSheet(BuildContext context) {
     return showModalBottomSheet(
+      backgroundColor: Colors.white,
       context: context,
       elevation: 100,
       shape: const RoundedRectangleBorder(

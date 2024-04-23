@@ -394,7 +394,7 @@ class _RegisterState extends State<Register> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Get.to(() => const LoginPage());
+                    Get.offAll(() => const LoginPage());
                   },
                   child: const Text(
                     'back to login',
