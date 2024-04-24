@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutoree_app/presentation/pages/feed/feed_list.dart';
+import 'package:tutoree_app/presentation/pages/search.dart';
 import 'package:tutoree_app/presentation/pages/student/home.dart';
 import 'package:tutoree_app/presentation/pages/student/profile.dart';
 import 'package:tutoree_app/presentation/utils/common_utils.dart';
@@ -41,6 +42,7 @@ class _StudentPageState extends State<StudentPage> {
   static final List<Widget> _widget = [
     const StudentHomePage(),
     const CommonFeedsPage(),
+    const SearchPage(),
     const StudentProfilePage(),
   ];
 
