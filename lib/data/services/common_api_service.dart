@@ -15,3 +15,19 @@ class CourseApi {
     return result;
   }
 }
+
+class SearchApi {
+  Future<Map<String, dynamic>> getSearchResult(
+      String value, String token) async {
+    final env = await accessENV(assetsFileName: '.env');
+    apiHeader["Authorization"] = 'Bearer $token';
+    var response = await http.get(
+      Uri.parse('${env["URL"]}${endpoints["search"]}?value=$value'),
+      headers: apiHeader,
+    );
+    var body = jsonDecode(response.body);
+    int count = body["count"];
+    List<dynamic> result = body["data"];
+    return {"result": result, "count": count};
+  }
+}

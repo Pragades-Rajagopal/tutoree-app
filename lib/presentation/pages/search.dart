@@ -13,33 +13,37 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   final textController = TextEditingController();
-  int userId = 0;
+  // String _userName = '';
   String _token = '';
   SearchApi searchApi = SearchApi();
   List<dynamic> searchResult = [];
+  int searchResultCount = 0;
   String _searchValue = '';
+  bool _searchResultVisibility = false;
 
   @override
   void initState() {
     super.initState();
     getTokenData();
-    searchResult.clear();
-    _searchValue = '';
+    setState(() {
+      searchResult.clear();
+      _searchValue = '';
+    });
   }
 
   Future<void> getTokenData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      userId = int.parse(prefs.getString("user_id").toString());
+      // _userName = prefs.getString("user_name").toString();
       _token = prefs.getString("token")!;
     });
   }
 
   Future<void> getSearchResult(String value, String token) async {
-    List result = await searchApi.getSearchResult(value, token);
-    print(result);
+    Map<String, dynamic> result = await searchApi.getSearchResult(value, token);
     searchResult.clear();
-    searchResult.addAll(result);
+    searchResult.addAll(result["result"]);
+    searchResultCount = result["count"];
   }
 
   @override
@@ -93,6 +97,7 @@ class _SearchPageState extends State<SearchPage> {
                         if (textController.text != '') {
                           setState(() {
                             _searchValue = textController.text;
+                            _searchResultVisibility = true;
                           });
                         }
                       },
@@ -106,6 +111,7 @@ class _SearchPageState extends State<SearchPage> {
                     if (textController.text != '') {
                       setState(() {
                         _searchValue = textController.text;
+                        _searchResultVisibility = true;
                       });
                     }
                   },
@@ -114,7 +120,10 @@ class _SearchPageState extends State<SearchPage> {
               const SizedBox(
                 height: 10,
               ),
-              searchResultBuilder(_searchValue, _token),
+              if (_searchResultVisibility) ...{
+                // Text('showing $searchResultCount results...'),
+                searchResultBuilder(_searchValue, _token),
+              }
             ],
           ),
         ),
@@ -128,11 +137,7 @@ class _SearchPageState extends State<SearchPage> {
       builder: (context, snapshot) {
         try {
           if (snapshot.connectionState == ConnectionState.done) {
-            if (searchResult[0] == 0) {
-              return const Center(
-                child: Text(''),
-              );
-            } else if (searchResult.isEmpty) {
+            if (searchResult.isEmpty) {
               return const Center(
                 child: Text(
                   "no result for the search",
@@ -202,17 +207,39 @@ class _SearchPageState extends State<SearchPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 14),
-                    child: Text(searchResult[index]["tbl_nm"])),
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 14),
+                  child: Text(
+                    searchResult[index]["tbl_nm"],
+                    style: const TextStyle(
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ),
                 Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 14),
-                    child: Text(searchResult[index]["field1"])),
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 14),
+                  child: Text(
+                    searchResult[index]["field1"],
+                  ),
+                ),
                 Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 14),
-                    child: Text(searchResult[index]["field2"])),
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 6),
+                  child: Text(
+                    searchResult[index]["field2"],
+                    style: const TextStyle(
+                      color: Color(0xFF757575),
+                    ),
+                  ),
+                ),
                 Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 14),
-                    child: Text(searchResult[index]["field3"])),
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 14),
+                  child: Text(
+                    searchResult[index]["field3"],
+                    style: const TextStyle(
+                      fontSize: 12.0,
+                      color: Color(0xFF757575),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
