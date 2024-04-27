@@ -53,9 +53,9 @@ class MyApp extends StatelessWidget {
             : const StudentPage(index: 0),
         "/": (context) => const LoginPage(),
         "studentHomeFeed": (context) => const StudentPage(index: 1),
-        "studentHomeProfile": (context) => const StudentPage(index: 2),
+        "studentHomeProfile": (context) => const StudentPage(index: 3),
         "tutorHomeFeed": (context) => const TutorPage(index: 1),
-        "tutorHomeProfile": (context) => const TutorPage(index: 2),
+        "tutorHomeProfile": (context) => const TutorPage(index: 3),
       },
     );
   }
