@@ -31,6 +31,7 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
   final int _limit = 25;
   int _offset = 0;
   bool _hasFeedData = true;
+  final Map<int, IconData> _upvoteIconState = {};
 
   @override
   void initState() {
@@ -111,8 +112,11 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
     }
   }
 
-  Future<void> updateUpvoteDo(int id, String token) async {
+  Future<void> updateUpvoteDo(int id, int index, String token) async {
     updateUpvoteRes = await apiService.updateUpvote(id, token);
+    setState(() {
+      _upvoteIconState[index] = Icons.arrow_circle_up_outlined;
+    });
   }
 
   @override
@@ -250,12 +254,13 @@ class _CommonFeedsPageState extends State<CommonFeedsPage> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         GestureDetector(
-                          child: const Icon(
-                            Icons.arrow_upward_sharp,
+                          child: Icon(
+                            _upvoteIconState[index] ?? Icons.arrow_upward_sharp,
                             size: 18.0,
                           ),
                           onTap: () async {
-                            await updateUpvoteDo(lists[index]["id"], _token);
+                            await updateUpvoteDo(
+                                lists[index]["id"], index, _token);
                           },
                         ),
                         const SizedBox(
